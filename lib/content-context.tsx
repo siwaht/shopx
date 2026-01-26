@@ -104,6 +104,38 @@ const defaultContent: ContentState = {
 
 const STORAGE_KEY = "maison-content"
 
+// Safe localStorage wrapper for environments like bolt.new
+const safeStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return localStorage.getItem(key)
+      }
+    } catch {
+      // localStorage not available
+    }
+    return null
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem(key, value)
+      }
+    } catch {
+      // localStorage not available
+    }
+  },
+  removeItem: (key: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.removeItem(key)
+      }
+    } catch {
+      // localStorage not available
+    }
+  }
+}
+
 interface ContentContextType {
   content: ContentState
   updateContent: <K extends keyof ContentState>(section: K, updates: Partial<ContentState[K]>) => void
@@ -125,7 +157,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   // Load content from localStorage on mount
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
+      const stored = safeStorage.getItem(STORAGE_KEY)
       if (stored) {
         const parsed = JSON.parse(stored)
         setContent({ ...defaultContent, ...parsed })
@@ -140,7 +172,7 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (isHydrated) {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(content))
+        safeStorage.setItem(STORAGE_KEY, JSON.stringify(content))
       } catch (error) {
         console.error("Failed to save content to storage:", error)
       }
@@ -176,14 +208,14 @@ export function ContentProvider({ children }: { children: ReactNode }) {
 
   const resetContent = () => {
     setContent(defaultContent)
-    localStorage.removeItem(STORAGE_KEY)
+    safeStorage.removeItem(STORAGE_KEY)
   }
 
   const saveContent = async () => {
     setIsSaving(true)
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800))
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(content))
+    safeStorage.setItem(STORAGE_KEY, JSON.stringify(content))
     setLastSaved(new Date())
     setIsSaving(false)
   }
