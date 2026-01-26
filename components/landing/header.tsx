@@ -18,7 +18,8 @@ export function Header() {
   const { totalItems, setIsCartOpen, recentlyAdded } = useCart()
   const { content } = useContent()
   
-  const navigation = content.header.menuItems
+  // Filter out Contact tab as it's not used
+  const navigation = content.header.menuItems.filter(item => item.label !== "Contact")
 
   useEffect(() => {
     const handleScroll = () => {
