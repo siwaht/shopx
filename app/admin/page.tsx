@@ -1,17 +1,30 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { LayoutDashboard, Package, Users, ShoppingCart, Settings, ChartBar as BarChart3, ChevronLeft, TrendingUp, TrendingDown, DollarSign, Eye, Menu, X, Search, Bell, Plus, MoveHorizontal as MoreHorizontal, ArrowUpRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
+import {
+  LayoutDashboard,
+  Package,
+  Users,
+  ShoppingCart,
+  Settings,
+  BarChart3,
+  ChevronLeft,
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Eye,
+  Menu,
+  X,
+  Search,
+  Bell,
+  Plus,
+  ArrowUpRight,
+} from "lucide-react"
 
 // Navigation items
-const navigation = [
+const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, id: "dashboard" },
   { name: "Products", icon: Package, id: "products" },
   { name: "Orders", icon: ShoppingCart, id: "orders" },
@@ -22,10 +35,10 @@ const navigation = [
 
 // Stats data
 const stats = [
-  { name: "Total Revenue", value: "$45,231", change: "+12.5%", trend: "up", icon: DollarSign },
-  { name: "Total Orders", value: "1,234", change: "+8.2%", trend: "up", icon: ShoppingCart },
-  { name: "Active Customers", value: "5,678", change: "+15.3%", trend: "up", icon: Users },
-  { name: "Page Views", value: "89,432", change: "-2.4%", trend: "down", icon: Eye },
+  { name: "Total Revenue", value: "$45,231", change: "+12.5%", trend: "up", Icon: DollarSign },
+  { name: "Total Orders", value: "1,234", change: "+8.2%", trend: "up", Icon: ShoppingCart },
+  { name: "Active Customers", value: "5,678", change: "+15.3%", trend: "up", Icon: Users },
+  { name: "Page Views", value: "89,432", change: "-2.4%", trend: "down", Icon: Eye },
 ]
 
 // Recent orders
@@ -46,231 +59,396 @@ const topProducts = [
 ]
 
 export default function AdminPage() {
+  const [mounted, setMounted] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("dashboard")
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-    }).format(price)
+    return "$" + price.toLocaleString()
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-100 text-green-800"
-      case "processing":
-        return "bg-blue-100 text-blue-800"
-      case "shipped":
-        return "bg-purple-100 text-purple-800"
-      case "pending":
-        return "bg-yellow-100 text-yellow-800"
-      default:
-        return "bg-gray-100 text-gray-800"
+  const getStatusStyle = (status: string) => {
+    const styles: Record<string, string> = {
+      completed: "bg-green-100 text-green-800",
+      processing: "bg-blue-100 text-blue-800",
+      shipped: "bg-purple-100 text-purple-800",
+      pending: "bg-yellow-100 text-yellow-800",
     }
+    return styles[status] || "bg-gray-100 text-gray-800"
+  }
+
+  if (!mounted) {
+    return (
+      <div style={{ minHeight: "100vh", backgroundColor: "#f9fafb", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ 
+            width: 32, 
+            height: 32, 
+            border: "2px solid #111", 
+            borderTopColor: "transparent", 
+            borderRadius: "50%", 
+            margin: "0 auto 16px",
+            animation: "spin 1s linear infinite"
+          }} />
+          <p style={{ color: "#6b7280" }}>Loading admin panel...</p>
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div style={{ minHeight: "100vh", backgroundColor: "#f9fafb" }}>
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 40,
+          }}
+          className="lg:hidden"
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={cn(
-          "fixed top-0 left-0 z-50 h-full w-64 bg-white border-r transform transition-transform duration-200 ease-in-out lg:translate-x-0",
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        )}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          zIndex: 50,
+          height: "100%",
+          width: 256,
+          backgroundColor: "white",
+          borderRight: "1px solid #e5e7eb",
+          transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 0.2s ease-in-out",
+        }}
+        className="lg:!transform-none"
       >
-        <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between h-16 px-6 border-b">
-            <Link href="/" className="font-serif text-xl tracking-widest">
+        <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, padding: "0 24px", borderBottom: "1px solid #e5e7eb" }}>
+            <Link href="/" style={{ fontFamily: "serif", fontSize: 20, letterSpacing: "0.1em", textDecoration: "none", color: "#111" }}>
               MAISON
             </Link>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
+            <button
               onClick={() => setSidebarOpen(false)}
+              style={{ padding: 8, background: "none", border: "none", cursor: "pointer" }}
+              className="lg:hidden"
             >
-              <X className="h-5 w-5" />
-            </Button>
+              <X size={20} />
+            </button>
           </div>
 
-          <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-            {navigation.map((item) => (
+          <nav style={{ flex: 1, padding: "24px 16px", overflowY: "auto" }}>
+            {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => {
                   setActiveSection(item.id)
                   setSidebarOpen(false)
                 }}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors w-full text-left",
-                  activeSection === item.id
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-600 hover:bg-gray-100"
-                )}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  width: "100%",
+                  padding: "10px 12px",
+                  marginBottom: 4,
+                  borderRadius: 8,
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  textAlign: "left",
+                  backgroundColor: activeSection === item.id ? "#111" : "transparent",
+                  color: activeSection === item.id ? "white" : "#4b5563",
+                }}
               >
-                <item.icon className="h-5 w-5" />
+                <item.icon size={20} />
                 {item.name}
               </button>
             ))}
           </nav>
 
-          <div className="p-4 border-t">
-            <Button asChild variant="outline" className="w-full justify-start">
-              <Link href="/">
-                <ChevronLeft className="h-4 w-4 mr-2" />
-                Back to Store
-              </Link>
-            </Button>
+          <div style={{ padding: 16, borderTop: "1px solid #e5e7eb" }}>
+            <Link
+              href="/"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                width: "100%",
+                padding: "10px 16px",
+                borderRadius: 8,
+                border: "1px solid #e5e7eb",
+                backgroundColor: "white",
+                color: "#111",
+                textDecoration: "none",
+                fontSize: 14,
+              }}
+            >
+              <ChevronLeft size={16} />
+              Back to Store
+            </Link>
           </div>
         </div>
       </aside>
 
       {/* Main content */}
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white px-4 sm:px-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
+        <header style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 30,
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+          height: 64,
+          padding: "0 16px",
+          backgroundColor: "white",
+          borderBottom: "1px solid #e5e7eb",
+        }}>
+          <button
             onClick={() => setSidebarOpen(true)}
+            style={{ padding: 8, background: "none", border: "none", cursor: "pointer" }}
+            className="lg:hidden"
           >
-            <Menu className="h-5 w-5" />
-          </Button>
+            <Menu size={20} />
+          </button>
 
-          <div className="flex-1 flex items-center gap-4">
-            <div className="relative max-w-md flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
+          <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ position: "relative", maxWidth: 400, flex: 1 }}>
+              <Search size={16} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#9ca3af" }} />
+              <input
                 type="search"
                 placeholder="Search..."
-                className="pl-9 bg-gray-50 border-0"
+                style={{
+                  width: "100%",
+                  padding: "8px 12px 8px 40px",
+                  borderRadius: 8,
+                  border: "none",
+                  backgroundColor: "#f3f4f6",
+                  fontSize: 14,
+                }}
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-red-500 rounded-full" />
-            </Button>
-            <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
-              <span className="text-xs font-medium">AD</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <button style={{ position: "relative", padding: 8, background: "none", border: "none", cursor: "pointer" }}>
+              <Bell size={20} />
+              <span style={{
+                position: "absolute",
+                top: 6,
+                right: 6,
+                width: 8,
+                height: 8,
+                backgroundColor: "#ef4444",
+                borderRadius: "50%",
+              }} />
+            </button>
+            <div style={{
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              backgroundColor: "#e5e7eb",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 12,
+              fontWeight: 500,
+            }}>
+              AD
             </div>
           </div>
         </header>
 
-        <main className="p-4 sm:p-6 lg:p-8">
-          {/* Dashboard Section */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <main style={{ padding: 24 }}>
+          {/* Header */}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 32 }}>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-serif tracking-tight">Dashboard</h1>
-              <p className="text-gray-500 text-sm mt-1">
+              <h1 style={{ fontSize: 28, fontFamily: "serif", marginBottom: 4 }}>Dashboard</h1>
+              <p style={{ color: "#6b7280", fontSize: 14 }}>
                 Welcome back! Here&apos;s what&apos;s happening with your store.
               </p>
             </div>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
+            <button style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "10px 20px",
+              backgroundColor: "#111",
+              color: "white",
+              border: "none",
+              borderRadius: 8,
+              cursor: "pointer",
+              fontSize: 14,
+              fontWeight: 500,
+            }}>
+              <Plus size={16} />
               Add Product
-            </Button>
+            </button>
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 32 }}>
             {stats.map((stat) => (
-              <Card key={stat.name}>
-                <CardContent className="p-5">
-                  <div className="flex items-center justify-between">
-                    <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                      <stat.icon className="h-5 w-5 text-gray-700" />
-                    </div>
-                    <span
-                      className={cn(
-                        "flex items-center gap-1 text-xs font-medium",
-                        stat.trend === "up" ? "text-green-600" : "text-red-600"
-                      )}
-                    >
-                      {stat.trend === "up" ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
-                      {stat.change}
-                    </span>
+              <div key={stat.name} style={{
+                backgroundColor: "white",
+                borderRadius: 12,
+                padding: 20,
+                border: "1px solid #e5e7eb",
+              }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                  <div style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 8,
+                    backgroundColor: "#f3f4f6",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
+                    <stat.Icon size={20} color="#374151" />
                   </div>
-                  <div className="mt-3">
-                    <p className="text-2xl font-semibold">{stat.value}</p>
-                    <p className="text-sm text-gray-500">{stat.name}</p>
-                  </div>
-                </CardContent>
-              </Card>
+                  <span style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                    fontSize: 12,
+                    fontWeight: 500,
+                    color: stat.trend === "up" ? "#16a34a" : "#dc2626",
+                  }}>
+                    {stat.trend === "up" ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                    {stat.change}
+                  </span>
+                </div>
+                <p style={{ fontSize: 24, fontWeight: 600, marginBottom: 4 }}>{stat.value}</p>
+                <p style={{ fontSize: 14, color: "#6b7280" }}>{stat.name}</p>
+              </div>
             ))}
           </div>
 
           {/* Orders and Products */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24 }} className="lg:grid-cols-3">
+            {/* Recent Orders */}
+            <div style={{
+              backgroundColor: "white",
+              borderRadius: 12,
+              border: "1px solid #e5e7eb",
+              gridColumn: "span 1",
+            }} className="lg:col-span-2">
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #e5e7eb" }}>
                 <div>
-                  <CardTitle className="text-lg">Recent Orders</CardTitle>
-                  <CardDescription>Latest customer orders</CardDescription>
+                  <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Recent Orders</h2>
+                  <p style={{ fontSize: 14, color: "#6b7280" }}>Latest customer orders</p>
                 </div>
-                <Button variant="ghost" size="sm">
-                  View all <ArrowUpRight className="h-4 w-4 ml-1" />
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentOrders.map((order) => (
-                    <div key={order.id} className="flex items-center justify-between py-2 border-b last:border-0">
-                      <div>
-                        <p className="font-medium">{order.id}</p>
-                        <p className="text-sm text-gray-500">{order.customer}</p>
-                      </div>
-                      <div className="text-right">
-                        <Badge className={cn("capitalize", getStatusColor(order.status))}>
-                          {order.status}
-                        </Badge>
-                        <p className="text-sm font-medium mt-1">{formatPrice(order.total)}</p>
-                      </div>
+                <button style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  padding: "6px 12px",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: 14,
+                  color: "#111",
+                }}>
+                  View all <ArrowUpRight size={14} />
+                </button>
+              </div>
+              <div style={{ padding: 20 }}>
+                {recentOrders.map((order) => (
+                  <div key={order.id} style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "12px 0",
+                    borderBottom: "1px solid #f3f4f6",
+                  }}>
+                    <div>
+                      <p style={{ fontWeight: 500, marginBottom: 4 }}>{order.id}</p>
+                      <p style={{ fontSize: 14, color: "#6b7280" }}>{order.customer}</p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <div style={{ textAlign: "right" }}>
+                      <span className={getStatusStyle(order.status)} style={{
+                        display: "inline-block",
+                        padding: "4px 12px",
+                        borderRadius: 9999,
+                        fontSize: 12,
+                        fontWeight: 500,
+                        textTransform: "capitalize",
+                      }}>
+                        {order.status}
+                      </span>
+                      <p style={{ fontSize: 14, fontWeight: 500, marginTop: 4 }}>{formatPrice(order.total)}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Top Products</CardTitle>
-                <CardDescription>Best selling items this month</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {topProducts.map((product, index) => (
-                    <div key={product.name} className="flex items-center gap-3">
-                      <span className="text-sm font-medium text-gray-400 w-4">{index + 1}</span>
-                      <div className="relative h-10 w-10 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                        <Image src={product.image} alt={product.name} fill className="object-cover" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{product.name}</p>
-                        <p className="text-xs text-gray-500">{product.sales} sales</p>
-                      </div>
-                      <p className="text-sm font-medium">{formatPrice(product.revenue)}</p>
+            {/* Top Products */}
+            <div style={{
+              backgroundColor: "white",
+              borderRadius: 12,
+              border: "1px solid #e5e7eb",
+            }}>
+              <div style={{ padding: "16px 20px", borderBottom: "1px solid #e5e7eb" }}>
+                <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Top Products</h2>
+                <p style={{ fontSize: 14, color: "#6b7280" }}>Best selling items this month</p>
+              </div>
+              <div style={{ padding: 20 }}>
+                {topProducts.map((product, index) => (
+                  <div key={product.name} style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    padding: "8px 0",
+                  }}>
+                    <span style={{ fontSize: 14, fontWeight: 500, color: "#9ca3af", width: 16 }}>{index + 1}</span>
+                    <div style={{
+                      position: "relative",
+                      width: 40,
+                      height: 40,
+                      borderRadius: 8,
+                      overflow: "hidden",
+                      backgroundColor: "#f3f4f6",
+                      flexShrink: 0,
+                    }}>
+                      <Image src={product.image} alt={product.name} fill style={{ objectFit: "cover" }} />
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: 14, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{product.name}</p>
+                      <p style={{ fontSize: 12, color: "#6b7280" }}>{product.sales} sales</p>
+                    </div>
+                    <p style={{ fontSize: 14, fontWeight: 500 }}>{formatPrice(product.revenue)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </main>
       </div>
+
+      <style>{`
+        @media (min-width: 1024px) {
+          .lg\\:hidden { display: none !important; }
+          .lg\\:pl-64 { padding-left: 256px !important; }
+          .lg\\:\\!transform-none { transform: none !important; }
+          .lg\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr) !important; }
+          .lg\\:col-span-2 { grid-column: span 2 !important; }
+        }
+      `}</style>
     </div>
   )
 }
