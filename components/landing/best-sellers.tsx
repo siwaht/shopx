@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { Heart, ShoppingBag, Star, Check, Loader2, ZoomIn } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ImageZoomModal } from "@/components/ui/image-zoom-modal"
@@ -191,9 +190,9 @@ export function BestSellers() {
             variant="outline"
             className="rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent self-center md:self-auto shrink-0 hover-lift transition-all duration-300"
           >
-            <Link href="#" className="text-xs sm:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase px-4 sm:px-6" aria-label="View all products in our collection">
+            <a href="#products" className="text-xs sm:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase px-4 sm:px-6" aria-label="View all products in our collection">
               View All
-            </Link>
+            </a>
           </Button>
         </header>
 
@@ -324,7 +323,7 @@ export function BestSellers() {
                   </Button>
                 </div>
               </article>
-              <Link href="#" className="block" aria-label={`View ${product.name} details`}>
+              <div className="block" aria-label={`View ${product.name} details`}>
                 <div className="flex items-center gap-1 mb-1.5 sm:mb-2">
                   <Star className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-accent text-accent" aria-hidden="true" />
                   <span className="text-[10px] sm:text-xs font-medium" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
@@ -347,7 +346,7 @@ export function BestSellers() {
                     </p>
                   )}
                 </div>
-              </Link>
+              </div>
             </li>
           ))}
         </ul>
