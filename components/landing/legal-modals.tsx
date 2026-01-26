@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { X, Shield, FileText, Lock, Mail, Globe, Scale } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 
 type ModalType = "privacy" | "terms" | null
@@ -71,11 +70,11 @@ export function LegalModals({ openModal, setOpenModal }: LegalModalsProps) {
         </div>
 
         {/* Content */}
-        <ScrollArea className="flex-1">
+        <div className="flex-1 overflow-y-auto">
           <div className="p-3 sm:p-4 lg:p-6 xl:p-8">
             {openModal === "privacy" ? <PrivacyPolicyContent /> : <TermsOfServiceContent />}
           </div>
-        </ScrollArea>
+        </div>
 
         {/* Footer */}
         <div className="p-3 sm:p-4 lg:p-6 border-t border-border shrink-0 bg-secondary/30">
