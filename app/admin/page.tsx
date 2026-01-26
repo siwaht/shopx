@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import {
@@ -65,13 +65,8 @@ const topProducts = [
 ]
 
 export default function AdminPage() {
-  const [mounted, setMounted] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("dashboard")
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -94,17 +89,6 @@ export default function AdminPage() {
       default:
         return "bg-gray-100 text-gray-800"
     }
-  }
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="h-8 w-8 border-2 border-gray-900 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Loading admin panel...</p>
-        </div>
-      </div>
-    )
   }
 
   return (
