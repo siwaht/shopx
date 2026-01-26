@@ -3,26 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import {
-  LayoutDashboard,
-  Package,
-  Users,
-  ShoppingCart,
-  Settings,
-  BarChart3,
-  ChevronLeft,
-  TrendingUp,
-  TrendingDown,
-  DollarSign,
-  Eye,
-  Menu,
-  X,
-  Search,
-  Bell,
-  Plus,
-  MoreHorizontal,
-  ArrowUpRight,
-} from "lucide-react"
+import { LayoutDashboard, Package, Users, ShoppingCart, Settings, ChartBar as BarChart3, ChevronLeft, TrendingUp, TrendingDown, DollarSign, Eye, Menu, X, Search, Bell, Plus, MoveHorizontal as MoreHorizontal, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
