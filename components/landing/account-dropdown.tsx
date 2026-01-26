@@ -24,16 +24,16 @@ export function AccountDropdown({ className }: AccountDropdownProps) {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon" 
+        <Button
+          variant="ghost"
+          size="icon"
           className={cn(
-            "hover:bg-primary/10 hover:text-primary rounded-full h-9 w-9 sm:h-10 sm:w-10 transition-all duration-200",
-            isOpen && "bg-primary/10 text-primary",
+            "hover:bg-transparent hover:text-primary p-0 h-auto w-auto transition-colors duration-300",
             className
           )}
+          aria-label="Open account menu"
         >
-          <User className="h-4 w-4 sm:h-5 sm:w-5" />
+          <User className="h-4 w-4 stroke-[1.5]" />
           <span className="sr-only">Account menu</span>
         </Button>
       </DropdownMenuTrigger>
