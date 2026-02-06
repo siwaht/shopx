@@ -41,10 +41,10 @@ export function Header() {
 
   return (
     <header className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-      isScrolled 
-        ? "bg-background/80 backdrop-blur-xl shadow-sm border-b border-white/10 py-1" 
-        : "bg-transparent py-4"
+      "fixed top-0 left-0 right-0 z-50 transition-all duration-700",
+      isScrolled
+        ? "bg-background/85 backdrop-elegant shadow-elegant border-b border-border/60 py-2"
+        : "bg-transparent py-6"
     )}>
       {/* Announcement bar - cleaner and subtler */}
       {content.header.showAnnouncement && (
@@ -52,10 +52,12 @@ export function Header() {
           "bg-primary text-primary-foreground text-center overflow-hidden transition-all duration-500 ease-in-out absolute top-0 left-0 right-0 z-[60]",
           isScrolled ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
         )} role="banner" aria-label="Promotional announcement">
-          <div className="py-2 px-4 flex items-center justify-center gap-3">
-            <p className="text-[10px] sm:text-xs tracking-[0.2em] uppercase font-medium">
+          <div className="py-3 px-4 flex items-center justify-center gap-3">
+            <Sparkles className="h-3.5 w-3.5 opacity-80" />
+            <p className="text-[10px] sm:text-xs tracking-[0.25em] uppercase font-medium">
               {content.header.announcement}
             </p>
+            <Sparkles className="h-3.5 w-3.5 opacity-80" />
           </div>
         </div>
       )}
@@ -153,7 +155,7 @@ export function Header() {
 
           {/* Logo - Center */}
           <div className="flex-1 flex justify-center lg:flex-none">
-            <Link href="/" className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-[0.15em] text-primary hover:opacity-90 transition-opacity" aria-label={`${content.header.logo} - Home`}>
+            <Link href="/" className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-[0.18em] text-primary hover:text-primary/80 transition-all duration-500 drop-shadow-sm" aria-label={`${content.header.logo} - Home`}>
               {content.header.logo}
             </Link>
           </div>

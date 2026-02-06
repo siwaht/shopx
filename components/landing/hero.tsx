@@ -67,16 +67,16 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Content */}
           <div className="order-2 lg:order-1 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/10 bg-primary/5 text-primary text-[11px] tracking-[0.2em] uppercase mb-8 animate-slide-up backdrop-blur-sm" style={{ animationDelay: "0.2s" }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              <span>{hero.badge}</span>
+            <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-primary/15 bg-primary/[0.03] text-primary text-[11px] tracking-[0.25em] uppercase mb-10 animate-slide-up backdrop-elegant shadow-elegant" style={{ animationDelay: "0.2s" }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-sm" />
+              <span className="font-medium">{hero.badge}</span>
             </div>
 
-            <h1 id="hero-heading" className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.5rem] leading-[1.1] tracking-tight text-balance mb-8 animate-slide-up text-foreground" style={{ animationDelay: "0.4s" }}>
+            <h1 id="hero-heading" className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6rem] leading-[1.05] tracking-[-0.02em] text-balance mb-10 animate-slide-up text-foreground drop-shadow-sm" style={{ animationDelay: "0.4s" }}>
               {renderHeadline()}
             </h1>
 
-            <p className="text-muted-foreground text-lg sm:text-xl font-light leading-relaxed max-w-lg mx-auto lg:mx-0 mb-10 animate-slide-up" style={{ animationDelay: "0.6s" }}>
+            <p className="text-muted-foreground text-lg sm:text-xl lg:text-2xl font-light leading-[1.7] max-w-lg mx-auto lg:mx-0 mb-12 animate-slide-up" style={{ animationDelay: "0.6s" }}>
               {hero.description}
             </p>
 
@@ -84,7 +84,7 @@ export function Hero() {
               <Button
                 asChild
                 size="lg"
-                className="h-14 px-8 text-xs tracking-[0.2em] uppercase bg-primary text-primary-foreground hover:bg-primary/90 rounded-none transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-primary/10"
+                className="h-16 px-10 text-[11px] tracking-[0.25em] uppercase font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm shadow-elegant-lg hover:shadow-2xl hover:glow-primary transition-all duration-500 hover:-translate-y-0.5"
               >
                 <Link href={hero.primaryButton.href} aria-label={hero.primaryButton.text}>
                   {hero.primaryButton.text}
@@ -94,7 +94,7 @@ export function Hero() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="h-14 px-8 text-xs tracking-[0.2em] uppercase border border-primary/20 text-primary hover:bg-primary/5 hover:text-primary hover:border-primary/40 bg-transparent rounded-none transition-all duration-300"
+                className="h-16 px-10 text-[11px] tracking-[0.25em] uppercase font-medium border-2 border-primary/25 text-primary hover:bg-primary/[0.03] hover:text-primary hover:border-primary/40 bg-transparent rounded-sm transition-all duration-500 hover:-translate-y-0.5"
               >
                 <Link href={hero.secondaryButton.href} aria-label={hero.secondaryButton.text}>
                   {hero.secondaryButton.text}
@@ -105,17 +105,17 @@ export function Hero() {
             {/* Stats - Refined */}
             <div
               ref={statsRef}
-              className="flex items-center justify-center lg:justify-start gap-12 sm:gap-16 mt-20 pt-8 border-t border-border/40 animate-slide-up"
+              className="flex items-center justify-center lg:justify-start gap-16 sm:gap-20 mt-24 pt-10 border-t border-border/30 animate-slide-up"
               style={{ animationDelay: "1s" }}
               role="list"
               aria-label="Company statistics"
             >
               {hero.stats.slice(0, 2).map((stat, index) => (
                 <div key={stat.label} role="listitem" className="group cursor-default text-center lg:text-left">
-                  <p className="font-serif text-3xl sm:text-4xl text-foreground font-medium transition-transform duration-500">
+                  <p className="font-serif text-4xl sm:text-5xl text-foreground font-medium tracking-tight transition-transform duration-500 drop-shadow-sm">
                     {index === 0 ? count1 : count2}+
                   </p>
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground mt-2">{stat.label}</p>
+                  <p className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground/80 mt-3 font-medium">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -123,28 +123,28 @@ export function Hero() {
 
           {/* Hero Image */}
           <figure className="order-1 lg:order-2 relative animate-scale-in z-10" style={{ animationDelay: "0.3s" }}>
-            <div className="relative aspect-[3/4] lg:aspect-[0.85] overflow-hidden shadow-2xl group cursor-pointer img-zoom-container bg-muted">
+            <div className="relative aspect-[3/4] lg:aspect-[0.85] overflow-hidden shadow-elegant-lg group cursor-pointer img-zoom-container bg-muted rounded-sm">
               <Image
                 src={hero.heroImage}
                 alt="Model wearing luxury fashion from the MAISON collection"
                 fill
-                className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+                className="object-cover transition-transform duration-[1.8s] ease-out group-hover:scale-105"
                 priority
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
               />
-              {/* Subtle Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-40" aria-hidden="true" />
+              {/* Refined Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/25 via-transparent to-transparent opacity-50 transition-opacity duration-700 group-hover:opacity-30" aria-hidden="true" />
 
               {/* Floating Badge */}
-              <div className="absolute bottom-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 p-4 max-w-[200px] hidden sm:block animate-fade-in" style={{ animationDelay: "1.2s" }}>
-                <p className="font-serif text-white text-lg">Royal Collection</p>
-                <p className="text-white/80 text-xs tracking-wider mt-1">Available Now</p>
+              <div className="absolute bottom-10 right-10 bg-white/15 backdrop-elegant border border-white/25 p-5 max-w-[220px] hidden sm:block animate-fade-in shadow-elegant-lg rounded-sm" style={{ animationDelay: "1.2s" }}>
+                <p className="font-serif text-white text-xl font-medium tracking-tight">Royal Collection</p>
+                <p className="text-white/85 text-xs tracking-[0.15em] uppercase mt-2 font-medium">Available Now</p>
               </div>
             </div>
 
-            {/* Minimal decorative frame elements */}
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 border-l border-b border-primary/20 -z-10" />
-            <div className="absolute -top-4 -right-4 w-24 h-24 border-r border-t border-primary/20 -z-10" />
+            {/* Elegant decorative frame elements */}
+            <div className="absolute -bottom-6 -left-6 w-32 h-32 border-l-2 border-b-2 border-primary/15 -z-10 rounded-sm" />
+            <div className="absolute -top-6 -right-6 w-32 h-32 border-r-2 border-t-2 border-primary/15 -z-10 rounded-sm" />
           </figure>
         </div>
 

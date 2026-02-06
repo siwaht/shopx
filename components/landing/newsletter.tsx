@@ -19,52 +19,52 @@ export function Newsletter() {
   }
 
   return (
-    <section className="py-20 sm:py-28 lg:py-40 bg-primary text-primary-foreground relative overflow-hidden">
+    <section className="py-24 sm:py-32 lg:py-48 bg-primary text-primary-foreground relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-72 sm:w-[400px] lg:w-[600px] h-72 sm:h-[400px] lg:h-[600px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-64 sm:w-80 lg:w-96 h-64 sm:h-80 lg:h-96 bg-accent/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-      
+      <div className="absolute top-0 right-0 w-80 sm:w-[500px] lg:w-[700px] h-80 sm:h-[500px] lg:h-[700px] bg-white/[0.03] rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-72 sm:w-96 lg:w-[500px] h-72 sm:h-96 lg:h-[500px] bg-accent/15 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-24 items-center">
           {/* Content */}
           <div className="text-center lg:text-left">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 text-xs sm:text-sm tracking-[0.15em] uppercase mb-6 sm:mb-8">
-              <Gift className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/[0.12] backdrop-elegant text-xs sm:text-sm tracking-[0.2em] uppercase mb-8 sm:mb-10 shadow-elegant font-medium">
+              <Gift className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
               Exclusive Benefits
             </div>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight mb-4 sm:mb-6 text-balance">
+            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-5 sm:mb-7 text-balance drop-shadow-sm">
               Join the World of MAISON
             </h2>
-            <p className="text-sm sm:text-base lg:text-lg leading-relaxed opacity-90 mb-6 sm:mb-8 max-w-lg mx-auto lg:mx-0">
-              Be the first to discover new collections, receive exclusive invitations to private events, 
+            <p className="text-base sm:text-lg lg:text-xl leading-[1.7] opacity-95 mb-8 sm:mb-10 max-w-lg mx-auto lg:mx-0 font-light">
+              Be the first to discover new collections, receive exclusive invitations to private events,
               and enjoy 15% off your first order.
             </p>
             
             {/* Benefits */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start text-xs sm:text-sm">
-              <div className="flex items-center justify-center lg:justify-start gap-2">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-accent/30 flex items-center justify-center shrink-0">
-                  <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <div className="flex flex-col sm:flex-row gap-5 sm:gap-7 justify-center lg:justify-start text-sm sm:text-base">
+              <div className="flex items-center justify-center lg:justify-start gap-2.5">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-accent/25 backdrop-elegant flex items-center justify-center shrink-0 shadow-elegant">
+                  <Check className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                 </div>
-                <span>Early Access</span>
+                <span className="font-medium">Early Access</span>
               </div>
-              <div className="flex items-center justify-center lg:justify-start gap-2">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-accent/30 flex items-center justify-center shrink-0">
-                  <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <div className="flex items-center justify-center lg:justify-start gap-2.5">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-accent/25 backdrop-elegant flex items-center justify-center shrink-0 shadow-elegant">
+                  <Sparkles className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                 </div>
-                <span>Exclusive Events</span>
+                <span className="font-medium">Exclusive Events</span>
               </div>
-              <div className="flex items-center justify-center lg:justify-start gap-2">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-accent/30 flex items-center justify-center shrink-0">
-                  <Gift className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <div className="flex items-center justify-center lg:justify-start gap-2.5">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-accent/25 backdrop-elegant flex items-center justify-center shrink-0 shadow-elegant">
+                  <Gift className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
                 </div>
-                <span>15% Off First Order</span>
+                <span className="font-medium">15% Off First Order</span>
               </div>
             </div>
           </div>
-          
+
           {/* Form */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-12">
+          <div className="bg-white/[0.08] backdrop-elegant rounded-xl sm:rounded-2xl p-8 sm:p-10 lg:p-14 shadow-elegant-lg border border-white/10">
             {isSubmitted ? (
               <div className="text-center py-6 sm:py-8">
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-accent/30 flex items-center justify-center mx-auto mb-4 sm:mb-6">
@@ -85,21 +85,21 @@ export function Newsletter() {
                 <p className="opacity-80 mb-6 sm:mb-8 text-sm sm:text-base">
                   Enter your email to receive updates on new arrivals and exclusive offers.
                 </p>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-5">
                   <Input
                     type="email"
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-12 sm:h-14 bg-white/10 border-white/20 placeholder:text-white/50 text-white focus-visible:ring-accent rounded-full px-5 sm:px-6 text-sm sm:text-base"
+                    className="h-14 sm:h-16 bg-white/[0.08] border-white/25 placeholder:text-white/60 text-white focus-visible:ring-accent focus-visible:ring-offset-0 focus-visible:border-accent/50 rounded-lg px-6 sm:px-7 text-base sm:text-lg font-light shadow-elegant backdrop-elegant"
                   />
                   <Button
                     type="submit"
-                    className="h-12 sm:h-14 bg-accent text-accent-foreground hover:bg-accent/90 text-xs sm:text-sm tracking-[0.15em] uppercase group rounded-full"
+                    className="h-14 sm:h-16 bg-accent text-accent-foreground hover:bg-accent/90 text-[11px] sm:text-xs tracking-[0.2em] uppercase font-semibold group rounded-lg shadow-elegant-lg hover:shadow-2xl hover:glow-accent transition-all duration-500 hover:-translate-y-0.5"
                   >
                     Subscribe Now
-                    <ArrowRight className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="ml-2.5 h-4 w-4 sm:h-4.5 sm:w-4.5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Button>
                 </form>
                 <p className="text-[10px] sm:text-xs opacity-60 mt-3 sm:mt-4 text-center">

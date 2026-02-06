@@ -49,26 +49,26 @@ export function FeaturedCollection() {
   const sectionContent = content.featuredCollections
 
   return (
-    <section id="collections" className="py-20 sm:py-28 lg:py-40 relative overflow-hidden" aria-labelledby="collections-heading">
+    <section id="collections" className="py-24 sm:py-32 lg:py-48 relative overflow-hidden" aria-labelledby="collections-heading">
       {/* Background decoration */}
-      <div className="absolute top-1/2 left-0 w-48 sm:w-72 h-48 sm:h-72 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 animate-float" aria-hidden="true" />
-      
+      <div className="absolute top-1/2 left-0 w-56 sm:w-80 h-56 sm:h-80 bg-accent/8 rounded-full blur-3xl -translate-y-1/2 animate-float" aria-hidden="true" />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <header 
+        <header
           ref={headerRef}
           className={cn(
-            "text-center mb-12 sm:mb-16 lg:mb-20 transition-all duration-700",
+            "text-center mb-16 sm:mb-20 lg:mb-24 transition-all duration-700",
             headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           )}
         >
-          <p className="text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.3em] uppercase text-primary font-medium mb-3 sm:mb-4">
+          <p className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.3em] uppercase text-primary font-semibold mb-4 sm:mb-5">
             {sectionContent.badge}
           </p>
-          <h2 id="collections-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight mb-4 sm:mb-6">
+          <h2 id="collections-heading" className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-5 sm:mb-7 drop-shadow-sm">
             {sectionContent.headline}
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base lg:text-lg max-w-2xl mx-auto text-balance">
+          <p className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-2xl mx-auto text-balance leading-relaxed">
             {sectionContent.description}
           </p>
         </header>
