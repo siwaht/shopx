@@ -67,20 +67,20 @@ export function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Content */}
           <div className="order-2 lg:order-1 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/10 bg-primary/5 text-primary text-[11px] tracking-[0.2em] uppercase mb-8 animate-slide-up opacity-0 backdrop-blur-sm" style={{ animationDelay: "0.2s" }}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/10 bg-primary/5 text-primary text-[11px] tracking-[0.2em] uppercase mb-8 animate-slide-up backdrop-blur-sm" style={{ animationDelay: "0.2s" }}>
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               <span>{hero.badge}</span>
             </div>
 
-            <h1 id="hero-heading" className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.5rem] leading-[1.1] tracking-tight text-balance mb-8 animate-slide-up opacity-0 text-foreground" style={{ animationDelay: "0.4s" }}>
+            <h1 id="hero-heading" className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.5rem] leading-[1.1] tracking-tight text-balance mb-8 animate-slide-up text-foreground" style={{ animationDelay: "0.4s" }}>
               {renderHeadline()}
             </h1>
 
-            <p className="text-muted-foreground text-lg sm:text-xl font-light leading-relaxed max-w-lg mx-auto lg:mx-0 mb-10 animate-slide-up opacity-0" style={{ animationDelay: "0.6s" }}>
+            <p className="text-muted-foreground text-lg sm:text-xl font-light leading-relaxed max-w-lg mx-auto lg:mx-0 mb-10 animate-slide-up" style={{ animationDelay: "0.6s" }}>
               {hero.description}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start animate-slide-up opacity-0" style={{ animationDelay: "0.8s" }}>
+            <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start animate-slide-up" style={{ animationDelay: "0.8s" }}>
               <Button
                 asChild
                 size="lg"
@@ -105,7 +105,7 @@ export function Hero() {
             {/* Stats - Refined */}
             <div
               ref={statsRef}
-              className="flex items-center justify-center lg:justify-start gap-12 sm:gap-16 mt-20 pt-8 border-t border-border/40 animate-slide-up opacity-0"
+              className="flex items-center justify-center lg:justify-start gap-12 sm:gap-16 mt-20 pt-8 border-t border-border/40 animate-slide-up"
               style={{ animationDelay: "1s" }}
               role="list"
               aria-label="Company statistics"
@@ -122,7 +122,7 @@ export function Hero() {
           </div>
 
           {/* Hero Image */}
-          <figure className="order-1 lg:order-2 relative animate-scale-in opacity-0 z-10" style={{ animationDelay: "0.3s" }}>
+          <figure className="order-1 lg:order-2 relative animate-scale-in z-10" style={{ animationDelay: "0.3s" }}>
             <div className="relative aspect-[3/4] lg:aspect-[0.85] overflow-hidden shadow-2xl group cursor-pointer img-zoom-container bg-muted">
               <Image
                 src={hero.heroImage}
@@ -136,7 +136,7 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-40" aria-hidden="true" />
 
               {/* Floating Badge */}
-              <div className="absolute bottom-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 p-4 max-w-[200px] hidden sm:block animate-fade-in opacity-0" style={{ animationDelay: "1.2s" }}>
+              <div className="absolute bottom-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 p-4 max-w-[200px] hidden sm:block animate-fade-in" style={{ animationDelay: "1.2s" }}>
                 <p className="font-serif text-white text-lg">Royal Collection</p>
                 <p className="text-white/80 text-xs tracking-wider mt-1">Available Now</p>
               </div>
