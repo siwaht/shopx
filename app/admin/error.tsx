@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect } from "react"
+import { AlertCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function Error({
   error,
@@ -14,18 +16,21 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="text-center max-w-md">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Something went wrong</h2>
-        <p className="text-gray-600 mb-6">
+        <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-6">
+          <AlertCircle className="h-8 w-8 text-destructive" />
+        </div>
+        <h2 className="font-serif text-2xl sm:text-3xl tracking-tight mb-3">Something went wrong</h2>
+        <p className="text-muted-foreground mb-8 leading-relaxed">
           There was an error loading the admin panel. This might be due to browser restrictions in this environment.
         </p>
-        <button
+        <Button
           onClick={reset}
-          className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+          className="px-8 h-11 rounded-lg shadow-elegant-lg hover:shadow-xl transition-all duration-300"
         >
           Try again
-        </button>
+        </Button>
       </div>
     </div>
   )

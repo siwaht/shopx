@@ -22,8 +22,11 @@ import {
   Plus,
   ArrowUpRight,
 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 
-// Navigation items
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, id: "dashboard" },
   { name: "Products", icon: Package, id: "products" },
@@ -33,7 +36,6 @@ const navItems = [
   { name: "Settings", icon: Settings, id: "settings" },
 ]
 
-// Stats data
 const stats = [
   { name: "Total Revenue", value: "$45,231", change: "+12.5%", trend: "up", Icon: DollarSign },
   { name: "Total Orders", value: "1,234", change: "+8.2%", trend: "up", Icon: ShoppingCart },
@@ -41,7 +43,6 @@ const stats = [
   { name: "Page Views", value: "89,432", change: "-2.4%", trend: "down", Icon: Eye },
 ]
 
-// Recent orders
 const recentOrders = [
   { id: "ORD-001", customer: "Sarah Johnson", total: 680, status: "completed", date: "2 hours ago" },
   { id: "ORD-002", customer: "Michael Chen", total: 495, status: "processing", date: "4 hours ago" },
@@ -50,7 +51,6 @@ const recentOrders = [
   { id: "ORD-005", customer: "Olivia Davis", total: 890, status: "completed", date: "12 hours ago" },
 ]
 
-// Top products
 const topProducts = [
   { name: "Ocean Silk Tie", sales: 234, revenue: 43290, image: "/images/bestseller-7.jpg" },
   { name: "Saffron Leather Clutch", sales: 189, revenue: 93555, image: "/images/bestseller-6.jpg" },
@@ -73,382 +73,252 @@ export default function AdminPage() {
 
   const getStatusStyle = (status: string) => {
     const styles: Record<string, string> = {
-      completed: "bg-green-100 text-green-800",
-      processing: "bg-blue-100 text-blue-800",
-      shipped: "bg-purple-100 text-purple-800",
-      pending: "bg-yellow-100 text-yellow-800",
+      completed: "bg-green-50 text-green-700 border-green-200",
+      processing: "bg-blue-50 text-blue-700 border-blue-200",
+      shipped: "bg-purple-50 text-purple-700 border-purple-200",
+      pending: "bg-amber-50 text-amber-700 border-amber-200",
     }
-    return styles[status] || "bg-gray-100 text-gray-800"
+    return styles[status] || "bg-muted text-muted-foreground border-border"
   }
 
   if (!mounted) {
     return (
-      <div style={{ minHeight: "100vh", backgroundColor: "#f9fafb", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ 
-            width: 32, 
-            height: 32, 
-            border: "2px solid #111", 
-            borderTopColor: "transparent", 
-            borderRadius: "50%", 
-            margin: "0 auto 16px",
-            animation: "spin 1s linear infinite"
-          }} />
-          <p style={{ color: "#6b7280" }}>Loading admin panel...</p>
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground text-sm">Loading admin panel...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f9fafb" }}>
+    <div className="min-h-screen bg-background">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            zIndex: 40,
-          }}
-          className="lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
         />
       )}
 
       {/* Sidebar */}
       <aside
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: 50,
-          height: "100%",
-          width: 256,
-          backgroundColor: "white",
-          borderRight: "1px solid #e5e7eb",
-          transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
-          transition: "transform 0.2s ease-in-out",
-        }}
-        className="lg:!transform-none"
+        className={cn(
+          "fixed top-0 left-0 z-50 h-full w-64 bg-card border-r border-border transition-transform duration-300 ease-in-out",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        )}
       >
-        <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, padding: "0 24px", borderBottom: "1px solid #e5e7eb" }}>
-            <Link href="/" style={{ fontFamily: "serif", fontSize: 20, letterSpacing: "0.1em", textDecoration: "none", color: "#111" }}>
+        <div className="flex flex-col h-full">
+          <div className="flex items-center justify-between h-16 px-6 border-b border-border">
+            <Link href="/" className="font-serif text-xl tracking-[0.18em] text-primary hover:text-primary/80 transition-colors">
               MAISON
             </Link>
             <button
               onClick={() => setSidebarOpen(false)}
-              style={{ padding: 8, background: "none", border: "none", cursor: "pointer" }}
-              className="lg:hidden"
+              className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors"
             >
-              <X size={20} />
+              <X className="h-5 w-5" />
             </button>
           </div>
 
-          <nav style={{ flex: 1, padding: "24px 16px", overflowY: "auto" }}>
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setActiveSection(item.id)
-                  setSidebarOpen(false)
-                }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  width: "100%",
-                  padding: "10px 12px",
-                  marginBottom: 4,
-                  borderRadius: 8,
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 14,
-                  fontWeight: 500,
-                  textAlign: "left",
-                  backgroundColor: activeSection === item.id ? "#111" : "transparent",
-                  color: activeSection === item.id ? "white" : "#4b5563",
-                }}
-              >
-                <item.icon size={20} />
-                {item.name}
-              </button>
-            ))}
+          <nav className="flex-1 p-4 overflow-y-auto">
+            <div className="space-y-1">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveSection(item.id)
+                    setSidebarOpen(false)
+                  }}
+                  className={cn(
+                    "flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300",
+                    activeSection === item.id
+                      ? "bg-primary text-primary-foreground shadow-elegant"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  )}
+                >
+                  <item.icon className="h-5 w-5" />
+                  {item.name}
+                </button>
+              ))}
+            </div>
           </nav>
 
-          <div style={{ padding: 16, borderTop: "1px solid #e5e7eb" }}>
-            <Link
-              href="/"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 8,
-                width: "100%",
-                padding: "10px 16px",
-                borderRadius: 8,
-                border: "1px solid #e5e7eb",
-                backgroundColor: "white",
-                color: "#111",
-                textDecoration: "none",
-                fontSize: 14,
-              }}
+          <div className="p-4 border-t border-border">
+            <Button
+              asChild
+              variant="outline"
+              className="w-full justify-center gap-2 rounded-lg"
             >
-              <ChevronLeft size={16} />
-              Back to Store
-            </Link>
+              <Link href="/">
+                <ChevronLeft className="h-4 w-4" />
+                Back to Store
+              </Link>
+            </Button>
           </div>
         </div>
       </aside>
 
       {/* Main content */}
       <div className="lg:pl-64">
-        <header style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 30,
-          display: "flex",
-          alignItems: "center",
-          gap: 16,
-          height: 64,
-          padding: "0 16px",
-          backgroundColor: "white",
-          borderBottom: "1px solid #e5e7eb",
-        }}>
+        <header className="sticky top-0 z-30 flex items-center gap-4 h-16 px-4 sm:px-6 bg-card/95 backdrop-elegant border-b border-border shadow-elegant">
           <button
             onClick={() => setSidebarOpen(true)}
-            style={{ padding: 8, background: "none", border: "none", cursor: "pointer" }}
-            className="lg:hidden"
+            className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors"
           >
-            <Menu size={20} />
+            <Menu className="h-5 w-5" />
           </button>
 
-          <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 16 }}>
-            <div style={{ position: "relative", maxWidth: 400, flex: 1 }}>
-              <Search size={16} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#9ca3af" }} />
-              <input
+          <div className="flex-1 flex items-center gap-4">
+            <div className="relative max-w-md flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
                 type="search"
                 placeholder="Search..."
-                style={{
-                  width: "100%",
-                  padding: "8px 12px 8px 40px",
-                  borderRadius: 8,
-                  border: "none",
-                  backgroundColor: "#f3f4f6",
-                  fontSize: 14,
-                }}
+                className="pl-10 bg-muted/50 border-0 focus-visible:ring-1 h-10"
               />
             </div>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <button style={{ position: "relative", padding: 8, background: "none", border: "none", cursor: "pointer" }}>
-              <Bell size={20} />
-              <span style={{
-                position: "absolute",
-                top: 6,
-                right: 6,
-                width: 8,
-                height: 8,
-                backgroundColor: "#ef4444",
-                borderRadius: "50%",
-              }} />
+          <div className="flex items-center gap-3">
+            <button className="relative p-2 hover:bg-muted rounded-lg transition-colors">
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
             </button>
-            <div style={{
-              width: 32,
-              height: 32,
-              borderRadius: "50%",
-              backgroundColor: "#e5e7eb",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 12,
-              fontWeight: 500,
-            }}>
+            <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-semibold">
               AD
             </div>
           </div>
         </header>
 
-        <main style={{ padding: 24 }}>
+        <main className="p-6 sm:p-8">
           {/* Header */}
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 32 }}>
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
             <div>
-              <h1 style={{ fontSize: 28, fontFamily: "serif", marginBottom: 4 }}>Dashboard</h1>
-              <p style={{ color: "#6b7280", fontSize: 14 }}>
+              <h1 className="font-serif text-3xl sm:text-4xl tracking-tight mb-2">Dashboard</h1>
+              <p className="text-muted-foreground">
                 Welcome back! Here&apos;s what&apos;s happening with your store.
               </p>
             </div>
-            <button style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "10px 20px",
-              backgroundColor: "#111",
-              color: "white",
-              border: "none",
-              borderRadius: 8,
-              cursor: "pointer",
-              fontSize: 14,
-              fontWeight: 500,
-            }}>
-              <Plus size={16} />
+            <Button className="gap-2 h-11 px-6 rounded-lg shadow-elegant-lg hover:shadow-xl transition-all duration-300">
+              <Plus className="h-4 w-4" />
               Add Product
-            </button>
+            </Button>
           </div>
 
           {/* Stats Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 32 }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
             {stats.map((stat) => (
-              <div key={stat.name} style={{
-                backgroundColor: "white",
-                borderRadius: 12,
-                padding: 20,
-                border: "1px solid #e5e7eb",
-              }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                  <div style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 8,
-                    backgroundColor: "#f3f4f6",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}>
-                    <stat.Icon size={20} color="#374151" />
+              <div
+                key={stat.name}
+                className="bg-card rounded-xl p-6 border border-border shadow-elegant hover:shadow-elegant-lg transition-all duration-500"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+                    <stat.Icon className="h-6 w-6 text-foreground" />
                   </div>
-                  <span style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 4,
-                    fontSize: 12,
-                    fontWeight: 500,
-                    color: stat.trend === "up" ? "#16a34a" : "#dc2626",
-                  }}>
-                    {stat.trend === "up" ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                  <span
+                    className={cn(
+                      "flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full",
+                      stat.trend === "up"
+                        ? "bg-green-50 text-green-700"
+                        : "bg-red-50 text-red-700"
+                    )}
+                  >
+                    {stat.trend === "up" ? (
+                      <TrendingUp className="h-3 w-3" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3" />
+                    )}
                     {stat.change}
                   </span>
                 </div>
-                <p style={{ fontSize: 24, fontWeight: 600, marginBottom: 4 }}>{stat.value}</p>
-                <p style={{ fontSize: 14, color: "#6b7280" }}>{stat.name}</p>
+                <p className="text-2xl sm:text-3xl font-semibold mb-1">{stat.value}</p>
+                <p className="text-sm text-muted-foreground">{stat.name}</p>
               </div>
             ))}
           </div>
 
           {/* Orders and Products */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24 }} className="lg:grid-cols-3">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Recent Orders */}
-            <div style={{
-              backgroundColor: "white",
-              borderRadius: 12,
-              border: "1px solid #e5e7eb",
-              gridColumn: "span 1",
-            }} className="lg:col-span-2">
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid #e5e7eb" }}>
+            <div className="lg:col-span-2 bg-card rounded-xl border border-border shadow-elegant">
+              <div className="flex items-center justify-between p-6 border-b border-border">
                 <div>
-                  <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Recent Orders</h2>
-                  <p style={{ fontSize: 14, color: "#6b7280" }}>Latest customer orders</p>
+                  <h2 className="text-lg font-semibold mb-1">Recent Orders</h2>
+                  <p className="text-sm text-muted-foreground">Latest customer orders</p>
                 </div>
-                <button style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4,
-                  padding: "6px 12px",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 14,
-                  color: "#111",
-                }}>
-                  View all <ArrowUpRight size={14} />
-                </button>
+                <Button variant="ghost" size="sm" className="gap-1 text-primary hover:text-primary">
+                  View all <ArrowUpRight className="h-4 w-4" />
+                </Button>
               </div>
-              <div style={{ padding: 20 }}>
-                {recentOrders.map((order) => (
-                  <div key={order.id} style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "12px 0",
-                    borderBottom: "1px solid #f3f4f6",
-                  }}>
-                    <div>
-                      <p style={{ fontWeight: 500, marginBottom: 4 }}>{order.id}</p>
-                      <p style={{ fontSize: 14, color: "#6b7280" }}>{order.customer}</p>
+              <div className="p-6">
+                <div className="space-y-4">
+                  {recentOrders.map((order, index) => (
+                    <div
+                      key={order.id}
+                      className={cn(
+                        "flex items-center justify-between py-4",
+                        index !== recentOrders.length - 1 && "border-b border-border/50"
+                      )}
+                    >
+                      <div className="flex-1">
+                        <p className="font-semibold mb-1">{order.id}</p>
+                        <p className="text-sm text-muted-foreground">{order.customer}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{order.date}</p>
+                      </div>
+                      <div className="text-right flex flex-col items-end gap-2">
+                        <Badge
+                          variant="outline"
+                          className={cn("capitalize font-medium", getStatusStyle(order.status))}
+                        >
+                          {order.status}
+                        </Badge>
+                        <p className="text-sm font-semibold">{formatPrice(order.total)}</p>
+                      </div>
                     </div>
-                    <div style={{ textAlign: "right" }}>
-                      <span className={getStatusStyle(order.status)} style={{
-                        display: "inline-block",
-                        padding: "4px 12px",
-                        borderRadius: 9999,
-                        fontSize: 12,
-                        fontWeight: 500,
-                        textTransform: "capitalize",
-                      }}>
-                        {order.status}
-                      </span>
-                      <p style={{ fontSize: 14, fontWeight: 500, marginTop: 4 }}>{formatPrice(order.total)}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Top Products */}
-            <div style={{
-              backgroundColor: "white",
-              borderRadius: 12,
-              border: "1px solid #e5e7eb",
-            }}>
-              <div style={{ padding: "16px 20px", borderBottom: "1px solid #e5e7eb" }}>
-                <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Top Products</h2>
-                <p style={{ fontSize: 14, color: "#6b7280" }}>Best selling items this month</p>
+            <div className="bg-card rounded-xl border border-border shadow-elegant">
+              <div className="p-6 border-b border-border">
+                <h2 className="text-lg font-semibold mb-1">Top Products</h2>
+                <p className="text-sm text-muted-foreground">Best selling items this month</p>
               </div>
-              <div style={{ padding: 20 }}>
-                {topProducts.map((product, index) => (
-                  <div key={product.name} style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    padding: "8px 0",
-                  }}>
-                    <span style={{ fontSize: 14, fontWeight: 500, color: "#9ca3af", width: 16 }}>{index + 1}</span>
-                    <div style={{
-                      position: "relative",
-                      width: 40,
-                      height: 40,
-                      borderRadius: 8,
-                      overflow: "hidden",
-                      backgroundColor: "#f3f4f6",
-                      flexShrink: 0,
-                    }}>
-                      <Image src={product.image} alt={product.name} fill style={{ objectFit: "cover" }} />
+              <div className="p-6">
+                <div className="space-y-4">
+                  {topProducts.map((product, index) => (
+                    <div key={product.name} className="flex items-center gap-3">
+                      <span className="text-sm font-semibold text-muted-foreground w-4">
+                        {index + 1}
+                      </span>
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0 shadow-sm">
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{product.name}</p>
+                        <p className="text-xs text-muted-foreground">{product.sales} sales</p>
+                      </div>
+                      <p className="text-sm font-semibold whitespace-nowrap">
+                        {formatPrice(product.revenue)}
+                      </p>
                     </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontSize: 14, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{product.name}</p>
-                      <p style={{ fontSize: 12, color: "#6b7280" }}>{product.sales} sales</p>
-                    </div>
-                    <p style={{ fontSize: 14, fontWeight: 500 }}>{formatPrice(product.revenue)}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </main>
       </div>
-
-      <style>{`
-        @media (min-width: 1024px) {
-          .lg\\:hidden { display: none !important; }
-          .lg\\:pl-64 { padding-left: 256px !important; }
-          .lg\\:\\!transform-none { transform: none !important; }
-          .lg\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr) !important; }
-          .lg\\:col-span-2 { grid-column: span 2 !important; }
-        }
-      `}</style>
     </div>
   )
 }
