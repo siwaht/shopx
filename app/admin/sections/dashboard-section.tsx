@@ -47,7 +47,11 @@ const getStatusStyle = (status: string) => {
   return styles[status] || "bg-muted text-muted-foreground border-border"
 }
 
-export function DashboardSection() {
+interface DashboardSectionProps {
+  onNavigate: (section: string) => void
+}
+
+export function DashboardSection({ onNavigate }: DashboardSectionProps) {
   const formatPrice = (price: number) => "$" + price.toLocaleString()
 
   return (
@@ -59,7 +63,7 @@ export function DashboardSection() {
             Welcome back! Here&apos;s what&apos;s happening with your store.
           </p>
         </div>
-        <Button className="gap-2 h-11 px-6 rounded-lg shadow-elegant-lg hover:shadow-xl transition-all duration-300">
+        <Button onClick={() => onNavigate("products")} className="gap-2 h-11 px-6 rounded-lg shadow-elegant-lg hover:shadow-xl transition-all duration-300">
           <Plus className="h-4 w-4" />
           Add Product
         </Button>
@@ -104,7 +108,7 @@ export function DashboardSection() {
               <h2 className="text-lg font-semibold mb-1">Recent Orders</h2>
               <p className="text-sm text-muted-foreground">Latest customer orders</p>
             </div>
-            <Button variant="ghost" size="sm" className="gap-1 text-primary hover:text-primary">
+            <Button variant="ghost" size="sm" onClick={() => onNavigate("orders")} className="gap-1 text-primary hover:text-primary">
               View all <ArrowUpRight className="h-4 w-4" />
             </Button>
           </div>

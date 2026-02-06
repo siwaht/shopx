@@ -9,13 +9,25 @@ import { Input } from "@/components/ui/input"
 export function Newsletter() {
   const [email, setEmail] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState("")
+
+  const validateEmail = (value: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (email) {
-      setIsSubmitted(true)
-      setEmail("")
+    setError("")
+    if (!email.trim()) {
+      setError("Please enter your email address.")
+      return
     }
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.")
+      return
+    }
+    setIsSubmitted(true)
+    setEmail("")
   }
 
   return (
@@ -86,14 +98,17 @@ export function Newsletter() {
                   Enter your email to receive updates on new arrivals and exclusive offers.
                 </p>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-5">
-                  <Input
-                    type="email"
-                    placeholder="Enter your email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-14 sm:h-16 bg-white/[0.08] border-white/25 placeholder:text-white/60 text-white focus-visible:ring-accent focus-visible:ring-offset-0 focus-visible:border-accent/50 rounded-lg px-6 sm:px-7 text-base sm:text-lg font-light shadow-elegant backdrop-elegant"
-                  />
+                  <div>
+                    <Input
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value); setError("") }}
+                      required
+                      className="h-14 sm:h-16 bg-white/[0.08] border-white/25 placeholder:text-white/60 text-white focus-visible:ring-accent focus-visible:ring-offset-0 focus-visible:border-accent/50 rounded-lg px-6 sm:px-7 text-base sm:text-lg font-light shadow-elegant backdrop-elegant"
+                    />
+                    {error && <p className="text-red-300 text-xs mt-2">{error}</p>}
+                  </div>
                   <Button
                     type="submit"
                     className="h-14 sm:h-16 bg-accent text-accent-foreground hover:bg-accent/90 text-[11px] sm:text-xs tracking-[0.2em] uppercase font-semibold group rounded-lg shadow-elegant-lg hover:shadow-2xl hover:glow-accent transition-all duration-500 hover:-translate-y-0.5"

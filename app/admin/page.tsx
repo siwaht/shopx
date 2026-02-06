@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import {
   LayoutDashboard,
@@ -14,6 +14,10 @@ import {
   X,
   Search,
   Bell,
+  CheckCircle2,
+  AlertCircle,
+  TrendingUp,
+  Truck,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -34,14 +38,41 @@ const navItems = [
   { name: "Settings", icon: Settings, id: "settings" },
 ]
 
+const notifications = [
+  { id: 1, icon: ShoppingCart, title: "New order received", desc: "ORD-009 from Alex Rivera - $520", time: "5 min ago", unread: true },
+  { id: 2, icon: AlertCircle, title: "Low stock alert", desc: "Pearl Silk Blouse - only 8 units left", time: "1 hour ago", unread: true },
+  { id: 3, icon: Truck, title: "Order shipped", desc: "ORD-003 has been dispatched", time: "3 hours ago", unread: false },
+  { id: 4, icon: TrendingUp, title: "Weekly report ready", desc: "Your analytics summary is available", time: "6 hours ago", unread: false },
+  { id: 5, icon: CheckCircle2, title: "Payment received", desc: "ORD-005 payment confirmed", time: "12 hours ago", unread: false },
+]
+
 export default function AdminPage() {
   const [mounted, setMounted] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("dashboard")
+  const [notifOpen, setNotifOpen] = useState(false)
+  const [readNotifs, setReadNotifs] = useState<number[]>([])
+  const notifRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setMounted(true)
   }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  const unreadCount = notifications.filter(n => n.unread && !readNotifs.includes(n.id)).length
+
+  const markAllRead = () => {
+    setReadNotifs(notifications.filter(n => n.unread).map(n => n.id))
+  }
 
   if (!mounted) {
     return (
@@ -56,13 +87,13 @@ export default function AdminPage() {
 
   const renderSection = () => {
     switch (activeSection) {
-      case "dashboard": return <DashboardSection />
+      case "dashboard": return <DashboardSection onNavigate={setActiveSection} />
       case "products": return <ProductsSection />
       case "orders": return <OrdersSection />
       case "customers": return <CustomersSection />
       case "analytics": return <AnalyticsSection />
       case "settings": return <SettingsSection />
-      default: return <DashboardSection />
+      default: return <DashboardSection onNavigate={setActiveSection} />
     }
   }
 
@@ -153,10 +184,58 @@ export default function AdminPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="relative p-2 hover:bg-muted rounded-lg transition-colors">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
-            </button>
+            <div className="relative" ref={notifRef}>
+              <button
+                onClick={() => setNotifOpen(!notifOpen)}
+                className="relative p-2 hover:bg-muted rounded-lg transition-colors"
+              >
+                <Bell className="h-5 w-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-semibold">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {notifOpen && (
+                <div className="absolute right-0 top-full mt-2 w-80 bg-card border border-border rounded-xl shadow-lg overflow-hidden z-50">
+                  <div className="flex items-center justify-between p-4 border-b border-border">
+                    <p className="font-semibold text-sm">Notifications</p>
+                    {unreadCount > 0 && (
+                      <button onClick={markAllRead} className="text-xs text-primary hover:underline">
+                        Mark all read
+                      </button>
+                    )}
+                  </div>
+                  <div className="max-h-80 overflow-y-auto divide-y divide-border/50">
+                    {notifications.map((notif) => {
+                      const isUnread = notif.unread && !readNotifs.includes(notif.id)
+                      return (
+                        <div
+                          key={notif.id}
+                          className={cn(
+                            "flex items-start gap-3 p-4 transition-colors hover:bg-muted/30",
+                            isUnread && "bg-primary/5"
+                          )}
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <notif.icon className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className={cn("text-sm truncate", isUnread ? "font-semibold" : "font-medium")}>{notif.title}</p>
+                              {isUnread && <span className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />}
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-0.5 truncate">{notif.desc}</p>
+                            <p className="text-xs text-muted-foreground/70 mt-1">{notif.time}</p>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-semibold">
               AD
             </div>

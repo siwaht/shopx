@@ -155,12 +155,22 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
               <div>
                 <p className="text-xs sm:text-sm font-medium text-muted-foreground mb-2 sm:mb-3">Quick Links</p>
                 <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
-                  {["New Arrivals", "Bestsellers", "Sale", "Gift Cards"].map((link) => (
+                  {[
+                    { label: "New Arrivals", section: "collections" },
+                    { label: "Bestsellers", section: "products" },
+                    { label: "Sale", section: "products" },
+                    { label: "Gift Cards", section: "newsletter" },
+                  ].map((link) => (
                     <button
-                      key={link}
+                      key={link.label}
+                      onClick={() => {
+                        handleClose()
+                        const el = document.getElementById(link.section)
+                        if (el) el.scrollIntoView({ behavior: "smooth" })
+                      }}
                       className="flex items-center justify-between p-2.5 sm:p-3 text-xs sm:text-sm bg-muted/50 hover:bg-muted rounded-lg transition-colors group"
                     >
-                      <span>{link}</span>
+                      <span>{link.label}</span>
                       <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                     </button>
                   ))}

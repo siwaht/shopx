@@ -10,21 +10,37 @@ import {
   CheckCircle2,
   Clock,
   XCircle,
+  MapPin,
+  CreditCard,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
-const orders = [
-  { id: "ORD-001", customer: "Sarah Johnson", email: "sarah@email.com", total: 680, items: 3, status: "completed", date: "Feb 6, 2026", payment: "Paid" },
-  { id: "ORD-002", customer: "Michael Chen", email: "michael@email.com", total: 495, items: 2, status: "processing", date: "Feb 6, 2026", payment: "Paid" },
-  { id: "ORD-003", customer: "Emma Williams", email: "emma@email.com", total: 1250, items: 4, status: "shipped", date: "Feb 5, 2026", payment: "Paid" },
-  { id: "ORD-004", customer: "James Brown", email: "james@email.com", total: 385, items: 1, status: "pending", date: "Feb 5, 2026", payment: "Pending" },
-  { id: "ORD-005", customer: "Olivia Davis", email: "olivia@email.com", total: 890, items: 3, status: "completed", date: "Feb 4, 2026", payment: "Paid" },
-  { id: "ORD-006", customer: "Liam Martinez", email: "liam@email.com", total: 1650, items: 5, status: "shipped", date: "Feb 4, 2026", payment: "Paid" },
-  { id: "ORD-007", customer: "Sophia Taylor", email: "sophia@email.com", total: 320, items: 1, status: "cancelled", date: "Feb 3, 2026", payment: "Refunded" },
-  { id: "ORD-008", customer: "Noah Wilson", email: "noah@email.com", total: 745, items: 2, status: "completed", date: "Feb 3, 2026", payment: "Paid" },
+interface Order {
+  id: string
+  customer: string
+  email: string
+  total: number
+  items: number
+  status: string
+  date: string
+  payment: string
+  address: string
+  products: { name: string; qty: number; price: number }[]
+}
+
+const orders: Order[] = [
+  { id: "ORD-001", customer: "Sarah Johnson", email: "sarah@email.com", total: 680, items: 3, status: "completed", date: "Feb 6, 2026", payment: "Paid", address: "123 Fifth Ave, New York, NY", products: [{ name: "Azure Linen Blazer", qty: 1, price: 695 }] },
+  { id: "ORD-002", customer: "Michael Chen", email: "michael@email.com", total: 495, items: 2, status: "processing", date: "Feb 6, 2026", payment: "Paid", address: "456 Market St, San Francisco, CA", products: [{ name: "Saffron Leather Clutch", qty: 1, price: 495 }] },
+  { id: "ORD-003", customer: "Emma Williams", email: "emma@email.com", total: 1250, items: 4, status: "shipped", date: "Feb 5, 2026", payment: "Paid", address: "789 Oxford St, London, UK", products: [{ name: "Emerald Wool Coat", qty: 1, price: 1250 }] },
+  { id: "ORD-004", customer: "James Brown", email: "james@email.com", total: 385, items: 1, status: "pending", date: "Feb 5, 2026", payment: "Pending", address: "321 Queen St, Toronto, CA", products: [{ name: "Coral Cashmere Sweater", qty: 1, price: 385 }] },
+  { id: "ORD-005", customer: "Olivia Davis", email: "olivia@email.com", total: 890, items: 3, status: "completed", date: "Feb 4, 2026", payment: "Paid", address: "654 Rue de Rivoli, Paris, FR", products: [{ name: "Midnight Velvet Dress", qty: 1, price: 890 }] },
+  { id: "ORD-006", customer: "Liam Martinez", email: "liam@email.com", total: 1650, items: 5, status: "shipped", date: "Feb 4, 2026", payment: "Paid", address: "987 Ocean Dr, Miami, FL", products: [{ name: "Emerald Wool Coat", qty: 1, price: 1250 }, { name: "Ocean Silk Tie", qty: 2, price: 200 }] },
+  { id: "ORD-007", customer: "Sophia Taylor", email: "sophia@email.com", total: 320, items: 1, status: "cancelled", date: "Feb 3, 2026", payment: "Refunded", address: "147 Friedrichstr, Berlin, DE", products: [{ name: "Pearl Silk Blouse", qty: 1, price: 320 }] },
+  { id: "ORD-008", customer: "Noah Wilson", email: "noah@email.com", total: 745, items: 2, status: "completed", date: "Feb 3, 2026", payment: "Paid", address: "258 George St, Sydney, AU", products: [{ name: "Saffron Leather Clutch", qty: 1, price: 495 }, { name: "Golden Hour Scarf", qty: 1, price: 245 }] },
 ]
 
 const statusConfig: Record<string, { style: string; icon: typeof CheckCircle2 }> = {
@@ -38,6 +54,7 @@ const statusConfig: Record<string, { style: string; icon: typeof CheckCircle2 }>
 export function OrdersSection() {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
 
   const statuses = ["all", "pending", "processing", "shipped", "completed", "cancelled"]
 
@@ -55,6 +72,19 @@ export function OrdersSection() {
     { label: "Completed", value: orders.filter(o => o.status === "completed").length, icon: CheckCircle2 },
   ]
 
+  const handleExport = () => {
+    const headers = ["Order ID", "Customer", "Email", "Date", "Items", "Status", "Payment", "Total"]
+    const rows = orders.map(o => [o.id, o.customer, o.email, o.date, o.items, o.status, o.payment, "$" + o.total])
+    const csv = [headers, ...rows].map(r => r.join(",")).join("\n")
+    const blob = new Blob([csv], { type: "text/csv" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "orders-export.csv"
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
@@ -62,7 +92,7 @@ export function OrdersSection() {
           <h1 className="font-serif text-3xl sm:text-4xl tracking-tight mb-2">Orders</h1>
           <p className="text-muted-foreground">Track and manage customer orders.</p>
         </div>
-        <Button variant="outline" className="gap-2 h-11 px-6 rounded-lg">
+        <Button variant="outline" onClick={handleExport} className="gap-2 h-11 px-6 rounded-lg">
           <Download className="h-4 w-4" />
           Export
         </Button>
@@ -134,7 +164,7 @@ export function OrdersSection() {
                 </Badge>
                 <p className="font-semibold">${order.total.toLocaleString()}</p>
                 <div className="flex justify-end">
-                  <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+                  <button onClick={() => setSelectedOrder(order)} className="p-2 hover:bg-muted rounded-lg transition-colors">
                     <Eye className="h-4 w-4 text-muted-foreground" />
                   </button>
                 </div>
@@ -147,6 +177,62 @@ export function OrdersSection() {
           <span>{filtered.length} of {orders.length} orders</span>
         </div>
       </div>
+
+      <Dialog open={!!selectedOrder} onOpenChange={() => setSelectedOrder(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogTitle className="font-serif text-xl">Order {selectedOrder?.id}</DialogTitle>
+          {selectedOrder && (
+            <div className="space-y-5 pt-2">
+              <div className="flex items-center justify-between">
+                <Badge variant="outline" className={cn("capitalize font-medium", statusConfig[selectedOrder.status]?.style)}>
+                  {selectedOrder.status}
+                </Badge>
+                <p className="text-sm text-muted-foreground">{selectedOrder.date}</p>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 text-sm">
+                  <Package className="h-4 w-4 text-muted-foreground mt-0.5" />
+                  <div>
+                    <p className="font-medium">{selectedOrder.customer}</p>
+                    <p className="text-muted-foreground text-xs">{selectedOrder.email}</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 text-sm">
+                  <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
+                  <p className="text-muted-foreground">{selectedOrder.address}</p>
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <CreditCard className="h-4 w-4 text-muted-foreground" />
+                  <p className={selectedOrder.payment === "Paid" ? "text-green-700" : selectedOrder.payment === "Refunded" ? "text-red-600" : "text-amber-600"}>
+                    {selectedOrder.payment}
+                  </p>
+                </div>
+              </div>
+
+              <div className="border-t border-border pt-4">
+                <p className="text-sm font-semibold mb-3">Items</p>
+                <div className="space-y-2">
+                  {selectedOrder.products.map((p, i) => (
+                    <div key={i} className="flex items-center justify-between py-2 px-3 bg-muted/30 rounded-lg">
+                      <div>
+                        <p className="text-sm font-medium">{p.name}</p>
+                        <p className="text-xs text-muted-foreground">Qty: {p.qty}</p>
+                      </div>
+                      <p className="text-sm font-semibold">${p.price.toLocaleString()}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-border">
+                <p className="font-semibold">Total</p>
+                <p className="text-lg font-semibold">${selectedOrder.total.toLocaleString()}</p>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
