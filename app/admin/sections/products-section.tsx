@@ -233,8 +233,6 @@ function ProductFormModal({
     }
   }
 
-  useState(() => { resetForm() })
-
   const handleOpenChange = (isOpen: boolean) => {
     if (isOpen) {
       resetForm()

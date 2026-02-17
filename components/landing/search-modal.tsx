@@ -9,16 +9,16 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 import { useCart } from "@/lib/cart-context"
 
-// Sample products for search
+// Sample products for search - using existing product images
 const searchableProducts = [
-  { id: 1, name: "Ocean Silk Tie", category: "Accessories", price: 185, image: "/images/product-tie.jpg" },
-  { id: 2, name: "Saffron Leather Clutch", category: "Bags", price: 495, image: "/images/product-clutch.jpg" },
-  { id: 3, name: "Coral Cashmere Sweater", category: "Knitwear", price: 385, image: "/images/product-sweater.jpg" },
-  { id: 4, name: "Azure Linen Blazer", category: "Outerwear", price: 695, image: "/images/product-blazer.jpg" },
-  { id: 5, name: "Emerald Silk Scarf", category: "Accessories", price: 165, image: "/images/product-scarf.jpg" },
-  { id: 6, name: "Burgundy Velvet Dress", category: "Dresses", price: 595, image: "/images/product-dress.jpg" },
-  { id: 7, name: "Golden Hour Earrings", category: "Jewelry", price: 245, image: "/images/product-earrings.jpg" },
-  { id: 8, name: "Midnight Leather Tote", category: "Bags", price: 675, image: "/images/product-tote.jpg" },
+  { id: 1, name: "Royal Velvet Blazer", category: "Outerwear", price: 1495, image: "/images/product-blue-blazer.jpg" },
+  { id: 2, name: "Marigold Cashmere Scarf", category: "Accessories", price: 385, image: "/images/product-yellow-scarf.jpg" },
+  { id: 3, name: "Italian Leather Loafers", category: "Footwear", price: 595, image: "/images/bestseller-3.jpg" },
+  { id: 4, name: "Amethyst Silk Dress", category: "Dresses", price: 1295, image: "/images/product-purple-dress.jpg" },
+  { id: 5, name: "Coral Oversized Coat", category: "Outerwear", price: 1695, image: "/images/product-orange-coat.jpg" },
+  { id: 6, name: "Saffron Leather Clutch", category: "Bags", price: 495, image: "/images/bestseller-6.jpg" },
+  { id: 7, name: "Ocean Silk Tie", category: "Accessories", price: 185, image: "/images/bestseller-7.jpg" },
+  { id: 8, name: "Linen Wide-Leg Trousers", category: "Trousers", price: 425, image: "/images/bestseller-4.jpg" },
 ]
 
 const recentSearches = ["Silk tie", "Leather bag", "Cashmere"]
