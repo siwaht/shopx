@@ -18,6 +18,7 @@ import {
   AlertCircle,
   TrendingUp,
   Truck,
+  Plug,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -28,6 +29,7 @@ import { OrdersSection } from "./sections/orders-section"
 import { CustomersSection } from "./sections/customers-section"
 import { AnalyticsSection } from "./sections/analytics-section"
 import { SettingsSection } from "./sections/settings-section"
+import { McpSection } from "./sections/mcp-section"
 
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, id: "dashboard" },
@@ -35,6 +37,7 @@ const navItems = [
   { name: "Orders", icon: ShoppingCart, id: "orders" },
   { name: "Customers", icon: Users, id: "customers" },
   { name: "Analytics", icon: BarChart3, id: "analytics" },
+  { name: "API / MCP", icon: Plug, id: "mcp" },
   { name: "Settings", icon: Settings, id: "settings" },
 ]
 
@@ -92,6 +95,7 @@ export default function AdminPage() {
       case "orders": return <OrdersSection />
       case "customers": return <CustomersSection />
       case "analytics": return <AnalyticsSection />
+      case "mcp": return <McpSection />
       case "settings": return <SettingsSection />
       default: return <DashboardSection onNavigate={setActiveSection} />
     }
