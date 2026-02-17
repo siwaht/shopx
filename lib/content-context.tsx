@@ -64,7 +64,6 @@ const defaultContent: ContentState = {
       { label: "Home", href: "#hero" },
       { label: "Collections", href: "#collections" },
       { label: "Shop", href: "#products" },
-      { label: "Reviews", href: "#testimonials" },
     ],
   },
   hero: {

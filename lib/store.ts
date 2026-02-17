@@ -71,6 +71,7 @@ export interface SiteContent {
     logo: string
     announcement: string
     showAnnouncement: boolean
+    menuItems?: { label: string; href: string }[]
   }
   hero: {
     badge: string
@@ -126,6 +127,32 @@ const defaultCustomers: Customer[] = [
   { id: 8, name: "Noah Wilson", email: "noah@email.com", location: "Sydney, AU", orders: 9, spent: 6780, joined: "Apr 2025", status: "active", recentOrders: [{ id: "ORD-008", date: "Feb 3, 2026", total: 745, status: "completed" }] },
 ]
 
+const defaultContent: SiteContent = {
+  header: {
+    logo: "MAISON",
+    announcement: "New Collection — Free shipping over $500",
+    showAnnouncement: true,
+    menuItems: [
+      { label: "Home", href: "#hero" },
+      { label: "Collections", href: "#collections" },
+      { label: "Shop", href: "#products" },
+    ],
+  },
+  hero: {
+    badge: "Spring/Summer 2026",
+    headline: "Discover Vibrant Elegance",
+    highlightWord: "Vibrant",
+    description: "Immerse yourself in a world of bold colors and impeccable craftsmanship. Our new collection celebrates the art of standing out with refined sophistication.",
+    primaryButtonText: "Explore Collection",
+    secondaryButtonText: "View Lookbook",
+    heroImage: "/images/hero-vibrant.jpg",
+  },
+  featuredCollections: { badge: "Curated Selection", headline: "Featured Collections", description: "Explore our carefully curated collections." },
+  testimonials: { badge: "Client Stories", headline: "Loved Worldwide", description: "Discover why fashion enthusiasts choose MAISON." },
+  newsletter: { badge: "Stay Connected", headline: "Join Our World", description: "Subscribe to receive exclusive updates." },
+  footer: { description: "Curating timeless elegance since 2010.", copyright: "© 2026 MAISON. All rights reserved." },
+}
+
 const defaultSettings: StoreSettings = {
   storeName: "MAISON",
   contactEmail: "concierge@maison.com",
@@ -144,6 +171,7 @@ class Store {
   orders: Order[] = [...defaultOrders]
   customers: Customer[] = [...defaultCustomers]
   settings: StoreSettings = { ...defaultSettings }
+  content: SiteContent = { ...defaultContent }
 
   // Products
   getProducts() { return this.products }
@@ -218,6 +246,18 @@ class Store {
       outOfStockProducts,
       totalProducts: this.products.length,
     }
+  }
+
+  // Content
+  getContent() { return this.content }
+  updateContent(section: string, updates: Record<string, unknown>) {
+    if (section in this.content) {
+      (this.content as Record<string, unknown>)[section] = {
+        ...(this.content as Record<string, Record<string, unknown>>)[section],
+        ...updates,
+      }
+    }
+    return this.content
   }
 
   // Reset to defaults
