@@ -74,20 +74,21 @@ export function FeaturedCollection() {
         </header>
 
         {/* Collections Grid */}
-        <ul 
+        <ul
           ref={gridRef}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8" 
-          role="list" 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-end"
+          role="list"
           aria-label="Fashion collections"
         >
           {collections.map((collection, index) => (
-            <li 
+            <li
               key={collection.id}
               className={cn(
                 "transition-all duration-700",
-                gridVisible 
-                  ? "opacity-100 translate-y-0" 
-                  : "opacity-0 translate-y-12"
+                gridVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-12",
+                index % 2 === 0 ? "lg:mb-12" : "lg:mt-12"
               )}
               style={{ transitionDelay: gridVisible ? `${index * 100}ms` : "0ms" }}
             >
@@ -96,7 +97,9 @@ export function FeaturedCollection() {
                 className="group block"
                 aria-label={`${collection.name} collection - ${collection.productCount} pieces`}
               >
-                <article className="relative aspect-[3/4] overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-5 hover-lift">
+                <article className={cn("relative overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-5 hover-lift",
+                  index % 2 === 0 ? "aspect-[4/5]" : "aspect-[3/4]"
+                )}>
                   <Image
                     src={collection.image || "/placeholder.svg"}
                     alt={`${collection.name} collection featuring ${collection.description.toLowerCase()}`}
@@ -105,26 +108,26 @@ export function FeaturedCollection() {
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-80" aria-hidden="true" />
-                  
+
                   {/* Color indicator with pulse */}
                   <div className={cn(
                     "absolute top-3 sm:top-4 left-3 sm:left-4 w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full transition-transform duration-300 group-hover:scale-150",
                     collection.color
                   )} aria-hidden="true" />
-                  
+
                   {/* Content overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 transform transition-transform duration-300 group-hover:translate-y-[-4px]">
-                    <p className="text-white/80 text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase mb-1 sm:mb-2">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 transform transition-transform duration-500 group-hover:translate-y-[-4px]">
+                    <p className="text-white/80 text-[9px] sm:text-[10px] font-light tracking-[0.2em] sm:tracking-[0.25em] uppercase mb-1.5 sm:mb-2">
                       {collection.productCount} pieces
                     </p>
-                    <h3 className="font-serif text-base sm:text-xl text-white mb-1">{collection.name}</h3>
+                    <h3 className="font-serif font-light text-lg sm:text-2xl text-white mb-1 tracking-wide">{collection.name}</h3>
                   </div>
-                  
+
                   {/* Hover arrow with rotation */}
                   <div className="absolute top-3 sm:top-4 right-3 sm:right-4 w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0" aria-hidden="true">
                     <ArrowUpRight className="h-4 sm:h-5 w-4 sm:w-5 text-foreground transition-transform duration-300 group-hover:rotate-45" />
                   </div>
-                  
+
                   {/* Shimmer effect on hover */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                     <div className="absolute inset-0 animate-shimmer" />

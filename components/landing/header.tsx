@@ -43,7 +43,7 @@ export function Header() {
     <header className={cn(
       "fixed top-0 left-0 right-0 z-50 transition-all duration-700",
       isScrolled
-        ? "bg-background/85 backdrop-elegant shadow-elegant border-b border-border/60 py-2"
+        ? "bg-background/85 backdrop-elegant shadow-elegant py-3 relative before:absolute before:bottom-0 before:left-0 before:right-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-border/60 before:to-transparent"
         : "bg-transparent py-6"
     )}>
       {/* Announcement bar - cleaner and subtler */}
@@ -72,7 +72,7 @@ export function Header() {
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="hover:bg-transparent text-foreground/80 hover:text-foreground">
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-5 w-5 stroke-[1.25]" />
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
@@ -84,7 +84,7 @@ export function Header() {
                     </Link>
                     <SheetClose asChild>
                       <Button variant="ghost" size="icon" className="h-10 w-10 index-10 hover:bg-muted/50 rounded-full transition-colors">
-                        <X className="h-5 w-5" />
+                        <X className="h-5 w-5 stroke-[1.25]" />
                         <span className="sr-only">Close menu</span>
                       </Button>
                     </SheetClose>
@@ -99,7 +99,7 @@ export function Header() {
                         setTimeout(() => setIsSearchOpen(true), 200)
                       }}
                     >
-                      <Search className="h-4 w-4" />
+                      <Search className="h-4 w-4 stroke-[1.25]" />
                       Search collections...
                     </Button>
 
@@ -183,7 +183,7 @@ export function Header() {
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Open search"
               >
-                <Search className="h-4 w-4 stroke-[1.5]" />
+                <Search className="h-4 w-4 stroke-[1.25]" />
               </Button>
               <AccountDropdown className="hidden sm:inline-flex" />
               <Button 
@@ -196,7 +196,7 @@ export function Header() {
                 onClick={() => setIsCartOpen(true)}
                 aria-label={`Shopping bag with ${totalItems} items`}
               >
-                <ShoppingBag className="h-4 w-4 stroke-[1.5]" />
+                <ShoppingBag className="h-4 w-4 stroke-[1.25]" />
                 {totalItems > 0 && (
                   <span className={cn(
                     "absolute -top-1.5 -right-1.5 h-3.5 w-3.5 rounded-full bg-primary text-primary-foreground text-[9px] font-medium flex items-center justify-center",
@@ -217,7 +217,7 @@ export function Header() {
               className="hover:bg-transparent p-0 h-auto w-auto"
               onClick={() => setIsSearchOpen(true)}
             >
-              <Search className="h-5 w-5 stroke-[1.5]" />
+              <Search className="h-5 w-5 stroke-[1.25]" />
             </Button>
             <Button 
               variant="ghost" 
@@ -225,7 +225,7 @@ export function Header() {
               className="hover:bg-transparent p-0 h-auto w-auto relative"
               onClick={() => setIsCartOpen(true)}
             >
-              <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
+              <ShoppingBag className="h-5 w-5 stroke-[1.25]" />
               {totalItems > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
                   {totalItems}

@@ -12,44 +12,44 @@ export function Hero() {
   const [statsRef, statsVisible] = useScrollAnimation<HTMLDivElement>({ threshold: 0.5 })
   const { content } = useContent()
   const hero = content.hero
-  
+
   // Parse stat values for animation
   const parseStatValue = (value: string) => parseInt(value.replace(/\D/g, "")) || 0
   const stat1 = parseStatValue(hero.stats[0]?.value || "150")
   const stat2 = parseStatValue(hero.stats[1]?.value || "40")
-  
+
   const count1 = useCountUp(stat1, 2000, 0, statsVisible)
   const count2 = useCountUp(stat2, 2000, 0, statsVisible)
 
   // Helper to highlight word in headline
   const renderHeadline = () => {
     const words = hero.headline.split(" ")
-    const highlightIndex = words.findIndex(w => 
+    const highlightIndex = words.findIndex(w =>
       w.toLowerCase().includes(hero.highlightWord.toLowerCase())
     )
-    
+
     if (highlightIndex === -1) {
       return (
         <>
-          <span className="block text-foreground/90">{words.slice(0, Math.ceil(words.length / 2)).join(" ")}</span>
-          <span className="italic text-primary relative inline-block">
+          <span className="block text-foreground/90 font-light">{words.slice(0, Math.ceil(words.length / 2)).join(" ")}</span>
+          <span className="italic text-primary font-light relative inline-block">
             {words.slice(Math.ceil(words.length / 2)).join(" ")}
-            <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-accent/40 transform scale-x-0 animate-[scale-in_1s_ease-out_1.2s_forwards] origin-left" />
+            <span className="absolute -bottom-2 left-0 w-full h-[1px] bg-accent/40 transform scale-x-0 animate-[scale-in_1s_ease-out_1.2s_forwards] origin-left" />
           </span>
         </>
       )
     }
-    
+
     const beforeHighlight = words.slice(0, highlightIndex).join(" ")
     const highlightedWord = words[highlightIndex]
     const afterHighlight = words.slice(highlightIndex + 1).join(" ")
-    
+
     return (
       <>
-        {beforeHighlight && <span className="block text-foreground/90">{beforeHighlight}</span>}
-        <span className="italic text-primary relative inline-block">
+        {beforeHighlight && <span className="block text-foreground/90 font-light">{beforeHighlight}</span>}
+        <span className="italic text-primary font-light relative inline-block">
           {highlightedWord} {afterHighlight}
-          <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-accent/40 transform scale-x-0 animate-[scale-in_1s_ease-out_1.2s_forwards] origin-left" />
+          <span className="absolute -bottom-2 left-0 w-full h-[1px] bg-accent/40 transform scale-x-0 animate-[scale-in_1s_ease-out_1.2s_forwards] origin-left" />
         </span>
       </>
     )
@@ -59,6 +59,7 @@ export function Hero() {
     <section id="hero" className="relative min-h-[90vh] flex items-center pt-32 pb-20 overflow-hidden" aria-labelledby="hero-heading">
       {/* Decorative background elements with animation - Softer and more elegant */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-noise z-0" />
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] animate-float opacity-70" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[100px] animate-float" style={{ animationDelay: "2s" }} />
       </div>
@@ -72,7 +73,7 @@ export function Hero() {
               <span className="font-medium">{hero.badge}</span>
             </div>
 
-            <h1 id="hero-heading" className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6rem] leading-[1.05] tracking-[-0.02em] text-balance mb-10 animate-slide-up text-foreground drop-shadow-sm" style={{ animationDelay: "0.4s" }}>
+            <h1 id="hero-heading" className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] leading-[1.02] tracking-[-0.03em] font-light text-balance mb-10 animate-slide-up text-foreground drop-shadow-sm" style={{ animationDelay: "0.4s" }}>
               {renderHeadline()}
             </h1>
 
@@ -84,7 +85,7 @@ export function Hero() {
               <Button
                 asChild
                 size="lg"
-                className="h-16 px-10 text-[11px] tracking-[0.25em] uppercase font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm shadow-elegant-lg hover:shadow-2xl hover:glow-primary transition-all duration-500 hover:-translate-y-0.5"
+                className="h-14 sm:h-16 px-8 sm:px-10 text-[10px] sm:text-[11px] tracking-[0.3em] uppercase font-light bg-primary text-primary-foreground hover:bg-primary/90 rounded-sm shadow-elegant-lg hover:shadow-2xl hover:glow-primary transition-all duration-500 hover:-translate-y-0.5"
               >
                 <Link href={hero.primaryButton.href} aria-label={hero.primaryButton.text}>
                   {hero.primaryButton.text}
@@ -94,7 +95,7 @@ export function Hero() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="h-16 px-10 text-[11px] tracking-[0.25em] uppercase font-medium border-2 border-primary/25 text-primary hover:bg-primary/[0.03] hover:text-primary hover:border-primary/40 bg-transparent rounded-sm transition-all duration-500 hover:-translate-y-0.5"
+                className="h-14 sm:h-16 px-8 sm:px-10 text-[10px] sm:text-[11px] tracking-[0.3em] uppercase font-light border-[0.5px] border-primary/30 text-primary hover:bg-primary/[0.03] hover:text-primary hover:border-primary/50 bg-transparent rounded-sm transition-all duration-500 hover:-translate-y-0.5"
               >
                 <Link href={hero.secondaryButton.href} aria-label={hero.secondaryButton.text}>
                   {hero.secondaryButton.text}
@@ -123,7 +124,7 @@ export function Hero() {
 
           {/* Hero Image */}
           <figure className="order-1 lg:order-2 relative animate-scale-in z-10" style={{ animationDelay: "0.3s" }}>
-            <div className="relative aspect-[3/4] lg:aspect-[0.85] overflow-hidden shadow-elegant-lg group cursor-pointer img-zoom-container bg-muted rounded-sm">
+            <div className="relative aspect-[3/4] lg:aspect-[0.85] overflow-hidden shadow-elegant-lg group cursor-pointer img-zoom-container bg-muted rounded-t-full rounded-b-md">
               <Image
                 src={hero.heroImage}
                 alt="Model wearing luxury fashion from the MAISON collection"
@@ -136,9 +137,9 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-t from-primary/25 via-transparent to-transparent opacity-50 transition-opacity duration-700 group-hover:opacity-30" aria-hidden="true" />
 
               {/* Floating Badge */}
-              <div className="absolute bottom-10 right-10 bg-white/15 backdrop-elegant border border-white/25 p-5 max-w-[220px] hidden sm:block animate-fade-in shadow-elegant-lg rounded-sm" style={{ animationDelay: "1.2s" }}>
-                <p className="font-serif text-white text-xl font-medium tracking-tight">Royal Collection</p>
-                <p className="text-white/85 text-xs tracking-[0.15em] uppercase mt-2 font-medium">Available Now</p>
+              <div className="absolute bottom-10 right-1/2 translate-x-1/2 sm:translate-x-0 sm:right-10 bg-white/10 backdrop-elegant border-[0.5px] border-white/20 p-6 max-w-[240px] animate-fade-in shadow-elegant-lg rounded-sm" style={{ animationDelay: "1.2s" }}>
+                <p className="font-serif text-white font-light text-xl tracking-wide">Royal Collection</p>
+                <p className="text-white/80 text-[10px] tracking-[0.2em] uppercase mt-3 font-light">Available Now</p>
               </div>
             </div>
 

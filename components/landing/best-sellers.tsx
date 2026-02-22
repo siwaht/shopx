@@ -128,10 +128,10 @@ export function BestSellers() {
 
   const handleAddToCart = async (product: typeof products[0]) => {
     setAddingToCart(product.id)
-    
+
     // Simulate a brief loading state for better UX feedback
     await new Promise((resolve) => setTimeout(resolve, 400))
-    
+
     addItem({
       id: product.id,
       name: product.name,
@@ -141,10 +141,10 @@ export function BestSellers() {
       category: product.category,
       color: product.color,
     })
-    
+
     setAddingToCart(null)
     setAddedToCart(product.id)
-    
+
     // Reset the "added" state after animation
     setTimeout(() => setAddedToCart(null), 2000)
   }
@@ -164,10 +164,10 @@ export function BestSellers() {
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-primary/5 rounded-full blur-3xl" aria-hidden="true" />
       <div className="absolute bottom-0 left-0 w-56 sm:w-80 h-56 sm:h-80 bg-accent/10 rounded-full blur-3xl" aria-hidden="true" />
-      
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <header 
+        <header
           ref={headerRef}
           className={cn(
             "flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-12 lg:mb-16 gap-4 sm:gap-6 transition-all duration-700",
@@ -175,32 +175,32 @@ export function BestSellers() {
           )}
         >
           <div className="text-center md:text-left">
-            <p className="text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.3em] uppercase text-primary font-medium mb-3 sm:mb-4">
+            <p className="text-[10px] sm:text-xs tracking-[0.25em] sm:tracking-[0.35em] uppercase text-primary font-semibold mb-4 sm:mb-5">
               Most Loved
             </p>
-            <h2 id="bestsellers-heading" className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight mb-3 sm:mb-4">
+            <h2 id="bestsellers-heading" className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-[-0.02em] mb-5 sm:mb-7 drop-shadow-sm">
               Best Sellers
             </h2>
-            <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto md:mx-0">
+            <p className="text-muted-foreground text-base sm:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0 text-balance leading-relaxed font-light">
               Our most coveted pieces, loved by fashion enthusiasts worldwide for their bold colors and impeccable quality.
             </p>
           </div>
           <Button
             asChild
             variant="outline"
-            className="rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent self-center md:self-auto shrink-0 hover-lift transition-all duration-300"
+            className="rounded-sm border-[0.5px] border-primary/30 text-primary hover:bg-primary/[0.03] hover:border-primary/50 hover:text-primary bg-transparent self-center md:self-auto shrink-0 hover-lift transition-all duration-500 h-10 sm:h-12"
           >
-            <a href="#products" className="text-xs sm:text-sm tracking-[0.1em] sm:tracking-[0.15em] uppercase px-4 sm:px-6" aria-label="View all products in our collection">
+            <a href="#products" className="text-[10px] sm:text-[11px] tracking-[0.25em] sm:tracking-[0.3em] font-light uppercase px-6 sm:px-8" aria-label="View all products in our collection">
               View All
             </a>
           </Button>
         </header>
 
         {/* Products Grid */}
-        <ul 
+        <ul
           ref={gridRef}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8" 
-          role="list" 
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
+          role="list"
           aria-label="Best selling products"
         >
           {products.map((product, index) => (
@@ -223,16 +223,16 @@ export function BestSellers() {
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                   itemProp="image"
                 />
-                
+
                 {/* Badges */}
-                <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 flex flex-col gap-1.5 sm:gap-2">
+                <div className="absolute top-3 sm:top-5 left-3 sm:left-5 flex flex-col gap-2">
                   {product.isNew && (
-                    <span className="bg-primary text-primary-foreground px-2 sm:px-3 py-0.5 sm:py-1 text-[8px] sm:text-[10px] tracking-[0.1em] sm:tracking-[0.15em] uppercase rounded-full" aria-label="New arrival">
+                    <span className="bg-white/80 backdrop-blur-md border border-primary/10 text-primary px-2.5 sm:px-3.5 py-1 text-[8px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] font-light uppercase rounded-sm shadow-sm" aria-label="New arrival">
                       New
                     </span>
                   )}
                   {product.originalPrice && (
-                    <span className="bg-accent text-accent-foreground px-2 sm:px-3 py-0.5 sm:py-1 text-[8px] sm:text-[10px] tracking-[0.1em] sm:tracking-[0.15em] uppercase rounded-full" aria-label="On sale">
+                    <span className="bg-white/80 backdrop-blur-md border border-accent/20 text-accent-foreground px-2.5 sm:px-3.5 py-1 text-[8px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] font-light uppercase rounded-sm shadow-sm" aria-label="On sale">
                       Sale
                     </span>
                   )}
@@ -240,14 +240,14 @@ export function BestSellers() {
 
                 {/* Action Buttons */}
                 <div className={cn(
-                  "absolute top-2.5 sm:top-4 right-2.5 sm:right-4 flex flex-col gap-2 transition-all duration-300",
-                  hoveredProduct === product.id ? "opacity-100" : "sm:opacity-0"
+                  "absolute top-3 sm:top-5 right-3 sm:right-5 flex flex-col gap-2.5 transition-all duration-500",
+                  hoveredProduct === product.id ? "opacity-100 translate-x-0" : "sm:opacity-0 sm:translate-x-2"
                 )}>
                   {/* Zoom Button */}
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="bg-white/90 hover:bg-white rounded-full h-8 w-8 sm:h-10 sm:w-10 transition-transform duration-200 hover:scale-110"
+                    className="bg-white/95 backdrop-blur-sm border-[0.5px] border-black/5 hover:bg-white rounded-full h-8 w-8 sm:h-10 sm:w-10 transition-transform duration-300 hover:scale-110 shadow-sm"
                     onClick={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
@@ -255,13 +255,13 @@ export function BestSellers() {
                     }}
                     aria-label={`Zoom ${product.name} image`}
                   >
-                    <ZoomIn className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+                    <ZoomIn className="h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[1.25]" aria-hidden="true" />
                   </Button>
                   {/* Wishlist Button */}
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="bg-white/90 hover:bg-white rounded-full h-8 w-8 sm:h-10 sm:w-10 transition-transform duration-200 hover:scale-110"
+                    className="bg-white/95 backdrop-blur-sm border-[0.5px] border-black/5 hover:bg-white rounded-full h-8 w-8 sm:h-10 sm:w-10 transition-transform duration-300 hover:scale-110 shadow-sm"
                     onClick={(e) => {
                       e.preventDefault()
                       e.stopPropagation()
@@ -271,7 +271,7 @@ export function BestSellers() {
                   >
                     <Heart
                       className={cn(
-                        "h-3.5 w-3.5 sm:h-4 sm:w-4 transition-all duration-300",
+                        "h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[1.25] transition-all duration-500",
                         wishlist.includes(product.id) && "fill-primary text-primary scale-110"
                       )}
                       aria-hidden="true"
@@ -282,15 +282,15 @@ export function BestSellers() {
                 {/* Quick Add */}
                 <div
                   className={cn(
-                    "absolute bottom-2.5 sm:bottom-4 left-2.5 sm:left-4 right-2.5 sm:right-4 transition-all duration-300",
+                    "absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 transition-all duration-500",
                     hoveredProduct === product.id
                       ? "opacity-100 translate-y-0"
-                      : "sm:opacity-0 sm:translate-y-2"
+                      : "sm:opacity-0 sm:translate-y-4"
                   )}
                 >
-                  <Button 
+                  <Button
                     className={cn(
-                      "w-full h-9 sm:h-12 text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase gap-1.5 sm:gap-2 rounded-full transition-all duration-300",
+                      "w-full h-9 sm:h-11 text-[9px] sm:text-[10px] font-light tracking-[0.2em] sm:tracking-[0.25em] uppercase gap-1.5 sm:gap-2 rounded-sm transition-all duration-500",
                       addedToCart === product.id && "bg-green-600 hover:bg-green-600",
                       isInCart(product.id) && addedToCart !== product.id && "bg-primary/80"
                     )}
@@ -301,47 +301,40 @@ export function BestSellers() {
                   >
                     {addingToCart === product.id ? (
                       <>
-                        <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" aria-hidden="true" />
+                        <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin stroke-[1.25]" aria-hidden="true" />
                         <span className="hidden sm:inline">Adding...</span>
                       </>
                     ) : addedToCart === product.id ? (
                       <>
-                        <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+                        <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[1.25]" aria-hidden="true" />
                         <span className="hidden sm:inline">Added</span>
                       </>
                     ) : isInCart(product.id) ? (
                       <>
-                        <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+                        <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[1.25]" aria-hidden="true" />
                         <span className="hidden sm:inline">Add Another</span>
                       </>
                     ) : (
                       <>
-                        <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" aria-hidden="true" />
+                        <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4 stroke-[1.25]" aria-hidden="true" />
                         <span className="hidden sm:inline">Add to Bag</span>
                       </>
                     )}
                   </Button>
                 </div>
               </article>
-              <div className="block" aria-label={`View ${product.name} details`}>
-                <div className="flex items-center gap-1 mb-1.5 sm:mb-2">
-                  <Star className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-accent text-accent" aria-hidden="true" />
-                  <span className="text-[10px] sm:text-xs font-medium" itemProp="aggregateRating" itemScope itemType="https://schema.org/AggregateRating">
-                    <span itemProp="ratingValue">{product.rating}</span>
-                  </span>
-                  <span className="text-[10px] sm:text-xs text-muted-foreground">({product.reviews})</span>
-                </div>
-                <p className="text-[10px] sm:text-xs tracking-[0.1em] sm:tracking-[0.15em] uppercase text-muted-foreground mb-0.5 sm:mb-1 truncate">
-                  {product.category} • {product.color}
+              <div className="block mt-4 sm:mt-5 text-center" aria-label={`View ${product.name} details`}>
+                <p className="text-[9px] sm:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] uppercase text-muted-foreground mb-1.5 sm:mb-2 truncate font-light">
+                  {product.category}
                 </p>
-                <h3 className="text-sm sm:text-base font-medium mb-1.5 sm:mb-2 group-hover:text-primary transition-colors line-clamp-2" itemProp="name">
+                <h3 className="text-sm sm:text-base font-serif font-light mb-1 sm:mb-1.5 group-hover:text-primary transition-colors line-clamp-1 mx-2" itemProp="name">
                   {product.name}
                 </h3>
-                <div className="flex items-center gap-1.5 sm:gap-2" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                  <p className="text-sm sm:text-base font-medium" itemProp="price" content={product.price.toString()}>{formatPrice(product.price)}</p>
+                <div className="flex items-center justify-center gap-2 sm:gap-3" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                  <p className="text-xs sm:text-sm tracking-wide text-foreground/90 font-light" itemProp="price" content={product.price.toString()}>{formatPrice(product.price)}</p>
                   <meta itemProp="priceCurrency" content="USD" />
                   {product.originalPrice && (
-                    <p className="text-xs sm:text-sm text-muted-foreground line-through">
+                    <p className="text-[10px] sm:text-[11px] text-muted-foreground/60 line-through tracking-wide">
                       {formatPrice(product.originalPrice)}
                     </p>
                   )}
