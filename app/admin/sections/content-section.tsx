@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import {
   Type,
-  Image,
+  ImageIcon,
   Menu,
   Megaphone,
   Save,
@@ -47,7 +47,7 @@ interface ContentData {
 }
 
 const contentTabs = [
-  { id: "hero", label: "Hero Section", icon: Image },
+  { id: "hero", label: "Hero Section", icon: ImageIcon },
   { id: "header", label: "Header & Menu", icon: Menu },
   { id: "announcement", label: "Announcement", icon: Megaphone },
   { id: "footer", label: "Footer", icon: Type },

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import {
   TrendingUp,
@@ -7,35 +8,45 @@ import {
   DollarSign,
   ShoppingCart,
   Users,
-  Eye,
+  Package,
   Plus,
   ArrowUpRight,
+  AlertTriangle,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
-const stats = [
-  { name: "Total Revenue", value: "$45,231", change: "+12.5%", trend: "up", Icon: DollarSign },
-  { name: "Total Orders", value: "1,234", change: "+8.2%", trend: "up", Icon: ShoppingCart },
-  { name: "Active Customers", value: "5,678", change: "+15.3%", trend: "up", Icon: Users },
-  { name: "Page Views", value: "89,432", change: "-2.4%", trend: "down", Icon: Eye },
-]
-
-const recentOrders = [
-  { id: "ORD-001", customer: "Sarah Johnson", total: 680, status: "completed", date: "2 hours ago" },
-  { id: "ORD-002", customer: "Michael Chen", total: 495, status: "processing", date: "4 hours ago" },
-  { id: "ORD-003", customer: "Emma Williams", total: 1250, status: "shipped", date: "6 hours ago" },
-  { id: "ORD-004", customer: "James Brown", total: 385, status: "pending", date: "8 hours ago" },
-  { id: "ORD-005", customer: "Olivia Davis", total: 890, status: "completed", date: "12 hours ago" },
-]
-
-const topProducts = [
-  { name: "Ocean Silk Tie", sales: 234, revenue: 43290, image: "/images/bestseller-7.jpg" },
-  { name: "Saffron Leather Clutch", sales: 189, revenue: 93555, image: "/images/bestseller-6.jpg" },
-  { name: "Coral Cashmere Sweater", sales: 156, revenue: 60060, image: "/images/bestseller-5.jpg" },
-  { name: "Azure Linen Blazer", sales: 142, revenue: 98690, image: "/images/bestseller-4.jpg" },
-]
+interface DashboardData {
+  analytics: {
+    totalRevenue: number
+    totalOrders: number
+    totalCustomers: number
+    completedOrders: number
+    pendingOrders: number
+    shippedOrders: number
+    avgOrderValue: number
+    vipCustomers: number
+    lowStockProducts: number
+    outOfStockProducts: number
+    totalProducts: number
+  } | null
+  orders: {
+    id: string
+    customer: string
+    total: number
+    status: string
+    date: string
+  }[]
+  products: {
+    id: number
+    name: string
+    image: string
+    price: number
+    stock: number
+    status: string
+  }[]
+}
 
 const getStatusStyle = (status: string) => {
   const styles: Record<string, string> = {
@@ -43,6 +54,7 @@ const getStatusStyle = (status: string) => {
     processing: "bg-blue-50 text-blue-700 border-blue-200",
     shipped: "bg-purple-50 text-purple-700 border-purple-200",
     pending: "bg-amber-50 text-amber-700 border-amber-200",
+    cancelled: "bg-red-50 text-red-700 border-red-200",
   }
   return styles[status] || "bg-muted text-muted-foreground border-border"
 }
@@ -52,7 +64,40 @@ interface DashboardSectionProps {
 }
 
 export function DashboardSection({ onNavigate }: DashboardSectionProps) {
+  const [data, setData] = useState<DashboardData>({ analytics: null, orders: [], products: [] })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/analytics").then(r => r.json()),
+      fetch("/api/orders").then(r => r.json()),
+      fetch("/api/products").then(r => r.json()),
+    ]).then(([analytics, orders, products]) => {
+      setData({ analytics, orders, products })
+      setLoading(false)
+    }).catch(() => setLoading(false))
+  }, [])
+
   const formatPrice = (price: number) => "$" + price.toLocaleString()
+
+  if (loading || !data.analytics) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
+
+  const { analytics } = data
+  const recentOrders = data.orders.slice(0, 5)
+  const lowStockProducts = data.products.filter(p => p.status === "low_stock" || p.status === "out_of_stock").slice(0, 5)
+
+  const stats = [
+    { name: "Total Revenue", value: formatPrice(analytics.totalRevenue), change: "+12.5%", trend: "up" as const, Icon: DollarSign },
+    { name: "Total Orders", value: String(analytics.totalOrders), change: "+8.2%", trend: "up" as const, Icon: ShoppingCart },
+    { name: "Customers", value: String(analytics.totalCustomers), change: "+15.3%", trend: "up" as const, Icon: Users },
+    { name: "Products", value: String(analytics.totalProducts), change: `${analytics.lowStockProducts} low stock`, trend: analytics.lowStockProducts > 0 ? "down" as const : "up" as const, Icon: Package },
+  ]
 
   return (
     <div>
@@ -84,7 +129,7 @@ export function DashboardSection({ onNavigate }: DashboardSectionProps) {
                   "flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full",
                   stat.trend === "up"
                     ? "bg-green-50 text-green-700"
-                    : "bg-red-50 text-red-700"
+                    : "bg-amber-50 text-amber-700"
                 )}
               >
                 {stat.trend === "up" ? (
@@ -102,6 +147,7 @@ export function DashboardSection({ onNavigate }: DashboardSectionProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Orders */}
         <div className="lg:col-span-2 bg-card rounded-xl border border-border shadow-elegant">
           <div className="flex items-center justify-between p-6 border-b border-border">
             <div>
@@ -138,22 +184,28 @@ export function DashboardSection({ onNavigate }: DashboardSectionProps) {
                   </div>
                 </div>
               ))}
+              {recentOrders.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-8">No orders yet</p>
+              )}
             </div>
           </div>
         </div>
 
+        {/* Stock Alerts */}
         <div className="bg-card rounded-xl border border-border shadow-elegant">
-          <div className="p-6 border-b border-border">
-            <h2 className="text-lg font-semibold mb-1">Top Products</h2>
-            <p className="text-sm text-muted-foreground">Best selling items this month</p>
+          <div className="flex items-center justify-between p-6 border-b border-border">
+            <div>
+              <h2 className="text-lg font-semibold mb-1">Stock Alerts</h2>
+              <p className="text-sm text-muted-foreground">Products needing attention</p>
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => onNavigate("products")} className="gap-1 text-primary hover:text-primary">
+              View all <ArrowUpRight className="h-4 w-4" />
+            </Button>
           </div>
           <div className="p-6">
             <div className="space-y-4">
-              {topProducts.map((product, index) => (
-                <div key={product.name} className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-muted-foreground w-4">
-                    {index + 1}
-                  </span>
+              {lowStockProducts.map((product) => (
+                <div key={product.id} className="flex items-center gap-3">
                   <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0 shadow-sm">
                     <Image
                       src={product.image}
@@ -164,13 +216,28 @@ export function DashboardSection({ onNavigate }: DashboardSectionProps) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium truncate">{product.name}</p>
-                    <p className="text-xs text-muted-foreground">{product.sales} sales</p>
+                    <p className="text-xs text-muted-foreground">{formatPrice(product.price)}</p>
                   </div>
-                  <p className="text-sm font-semibold whitespace-nowrap">
-                    {formatPrice(product.revenue)}
-                  </p>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      "text-xs font-medium shrink-0",
+                      product.stock === 0
+                        ? "bg-red-50 text-red-700 border-red-200"
+                        : "bg-amber-50 text-amber-700 border-amber-200"
+                    )}
+                  >
+                    {product.stock === 0 ? (
+                      <span className="flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Out</span>
+                    ) : (
+                      `${product.stock} left`
+                    )}
+                  </Badge>
                 </div>
               ))}
+              {lowStockProducts.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-8">All products well stocked</p>
+              )}
             </div>
           </div>
         </div>

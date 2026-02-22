@@ -152,6 +152,20 @@ const endpoints: ApiEndpoint[] = [
     method: "GET", path: "/api/analytics", description: "Get store analytics: revenue, orders, customers, stock alerts, and trends.",
     category: "Analytics",
   },
+  // Content
+  {
+    method: "GET", path: "/api/content", description: "Get all site content: header, hero, footer, and section text.",
+    category: "Content",
+  },
+  {
+    method: "PUT", path: "/api/content", description: "Update a content section. Send section name and updates object.",
+    category: "Content",
+    body: [
+      { name: "section", type: "string", required: true, description: "Section to update: header, hero, footer, featuredCollections" },
+      { name: "updates", type: "object", required: true, description: "Fields to update within the section" },
+    ],
+    example: JSON.stringify({ section: "hero", updates: { headline: "Discover Bold Elegance", highlightWord: "Bold" } }, null, 2),
+  },
 ]
 
 const methodColors: Record<string, string> = {
@@ -162,7 +176,7 @@ const methodColors: Record<string, string> = {
   DELETE: "bg-red-50 text-red-700 border-red-200",
 }
 
-const categories = ["All", "Products", "Orders", "Customers", "Settings", "Analytics"]
+const categories = ["All", "Products", "Orders", "Customers", "Settings", "Analytics", "Content"]
 
 interface RequestLog {
   id: number
@@ -281,13 +295,13 @@ export function McpSection() {
           <div className="flex-1 min-w-0">
             <h2 className="font-semibold text-base mb-2">Quick Start</h2>
             <p className="text-sm text-muted-foreground mb-4">
-              This API lets an AI agent or MCP server fully manage the MAISON store — products, orders, customers, settings, and analytics. All endpoints return JSON.
+              This API lets an AI agent or MCP server fully manage the MAISON store — products, orders, customers, settings, content, and analytics. All endpoints return JSON. An MCP server is included at <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">mcp-server.ts</code> — run <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono">npm run mcp</code> to start it.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="flex items-center gap-2.5 p-3 bg-muted/50 rounded-lg">
                 <Zap className="h-4 w-4 text-primary flex-shrink-0" />
                 <div>
-                  <p className="text-xs font-medium">18 Endpoints</p>
+                  <p className="text-xs font-medium">20 Endpoints</p>
                   <p className="text-[10px] text-muted-foreground">Full CRUD operations</p>
                 </div>
               </div>

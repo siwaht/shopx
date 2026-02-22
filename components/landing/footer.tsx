@@ -10,7 +10,6 @@ type ModalType = "privacy" | "terms" | null
 const footerLinks = [
   { name: "Shop", href: "#products" },
   { name: "Collections", href: "#collections" },
-  { name: "Reviews", href: "#testimonials" },
 ]
 
 const socialLinks = [

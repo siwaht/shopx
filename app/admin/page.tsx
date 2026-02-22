@@ -58,6 +58,7 @@ export default function AdminPage() {
   const [activeSection, setActiveSection] = useState("dashboard")
   const [notifOpen, setNotifOpen] = useState(false)
   const [readNotifs, setReadNotifs] = useState<number[]>([])
+  const [sectionKey, setSectionKey] = useState(0)
   const notifRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -140,6 +141,7 @@ export default function AdminPage() {
                   key={item.id}
                   onClick={() => {
                     setActiveSection(item.id)
+                    setSectionKey(k => k + 1)
                     setSidebarOpen(false)
                   }}
                   className={cn(
@@ -251,7 +253,9 @@ export default function AdminPage() {
         </header>
 
         <main className="p-6 sm:p-8">
-          {renderSection()}
+          <div key={sectionKey} className="animate-fade-in" style={{ animationDuration: "0.3s" }}>
+            {renderSection()}
+          </div>
         </main>
       </div>
     </div>

@@ -46,7 +46,6 @@ export interface ContentState {
   header: HeaderContent
   hero: HeroContent
   featuredCollections: SectionContent
-  testimonials: SectionContent
   newsletter: SectionContent
   footer: {
     description: string
@@ -84,11 +83,6 @@ const defaultContent: ContentState = {
     badge: "Curated Selection",
     headline: "Featured Collections",
     description: "Explore our carefully curated collections, each telling its own story of color, texture, and timeless elegance.",
-  },
-  testimonials: {
-    badge: "Client Stories",
-    headline: "Loved Worldwide",
-    description: "Discover why fashion enthusiasts around the globe choose MAISON for their most memorable moments.",
   },
   newsletter: {
     badge: "Stay Connected",
