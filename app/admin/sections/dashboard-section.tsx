@@ -89,8 +89,8 @@ export function DashboardSection({ onNavigate }: DashboardSectionProps) {
   }
 
   const { analytics } = data
-  const recentOrders = data.orders.slice(0, 5)
-  const lowStockProducts = data.products.filter(p => p.status === "low_stock" || p.status === "out_of_stock").slice(0, 5)
+  const recentOrders = (Array.isArray(data.orders) ? data.orders : []).slice(0, 5)
+  const lowStockProducts = (Array.isArray(data.products) ? data.products : []).filter(p => p.status === "low_stock" || p.status === "out_of_stock").slice(0, 5)
 
   const stats = [
     { name: "Total Revenue", value: formatPrice(analytics.totalRevenue), change: "+12.5%", trend: "up" as const, Icon: DollarSign },
